@@ -1,7 +1,7 @@
-/* Space Grotesk — bundled via @fontsource, no CDN (NFR-1) */
-@import '@fontsource/space-grotesk/400.css';
-@import '@fontsource/space-grotesk/500.css';
-@import '@fontsource/space-grotesk/600.css';
+/* Plus Jakarta Sans — bundled via @fontsource, no CDN (NFR-1) */
+@import '@fontsource/plus-jakarta-sans/400.css';
+@import '@fontsource/plus-jakarta-sans/500.css';
+@import '@fontsource/plus-jakarta-sans/600.css';
 
 @import './styles/tokens.css';
 
@@ -74,4 +74,5 @@ a:hover {
   display: flex;
   min-height: 100dvh;
   background-color: var(--color-bg);
+  width: 100%;
 }

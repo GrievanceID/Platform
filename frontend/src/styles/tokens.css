@@ -65,7 +65,7 @@
   --status-resolved-text:     #374151;
 
   /* ── Typography ───────────────────────────────────────────────────────── */
-  --font-sans:   'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-sans:   'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono:   ui-monospace, 'Cascadia Code', Consolas, monospace;
 
   --text-xs:   0.75rem;    /* 12px */
