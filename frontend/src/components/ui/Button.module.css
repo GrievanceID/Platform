@@ -1,0 +1,95 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  border: 1px solid transparent;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* ── Sizes ──────────────────────────────────────────────────────────────── */
+.sm {
+  font-size: var(--text-sm);
+  padding: var(--space-1) var(--space-3);
+  height: 28px;
+}
+.md {
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-4);
+  height: 36px;
+}
+.lg {
+  font-size: var(--text-base);
+  padding: var(--space-3) var(--space-6);
+  height: 44px;
+}
+
+/* ── Primary (ochre) ────────────────────────────────────────────────────── */
+.primary {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--color-text-inverse);
+}
+.primary:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+.primary:active:not(:disabled) {
+  background-color: var(--accent-active);
+  border-color: var(--accent-active);
+}
+
+/* ── Secondary (outlined) ───────────────────────────────────────────────── */
+.secondary {
+  background-color: var(--color-surface);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+.secondary:hover:not(:disabled) {
+  background-color: var(--accent-subtle);
+  border-color: var(--accent-border);
+  color: var(--accent-hover);
+}
+.secondary:active:not(:disabled) {
+  background-color: var(--accent-subtle);
+  border-color: var(--accent);
+  color: var(--accent-active);
+}
+
+/* ── Danger ─────────────────────────────────────────────────────────────── */
+.danger {
+  background-color: #FEF2F2;
+  border-color: #FECACA;
+  color: #B91C1C;
+}
+.danger:hover:not(:disabled) {
+  background-color: #FEE2E2;
+  border-color: #FCA5A5;
+  color: #991B1B;
+}
+.danger:active:not(:disabled) {
+  background-color: #FCA5A5;
+  border-color: #F87171;
+  color: #7F1D1D;
+}
+
+/* ── Disabled (all variants) ────────────────────────────────────────────── */
+.btn:disabled,
+.disabled {
+  opacity: 1; /* don't rely on opacity — use explicit token colours */
+  background-color: var(--color-border);
+  border-color: var(--color-border);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}

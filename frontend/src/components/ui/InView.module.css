@@ -1,0 +1,48 @@
+/*
+ * InView reveal animation — pure CSS transitions.
+ * No JS animation library. No external runtime. Works air-gapped (NFR-1).
+ *
+ * Initial state: element is invisible + slightly offset.
+ * Visible state: full opacity, no offset.
+ * Transition: uses --transition-reveal token (400ms ease out back).
+ *
+ * The 'will-change' hint is intentionally omitted on the base class;
+ * browsers are good at this now and the hint adds memory overhead.
+ */
+
+/* ── Base: hidden state ─────────────────────────────────────────────────── */
+.reveal {
+  transition:
+    opacity var(--transition-reveal),
+    transform var(--transition-reveal);
+}
+
+/* Direction-specific initial offsets */
+.dir_up    { opacity: 0; transform: translateY(16px); }
+.dir_down  { opacity: 0; transform: translateY(-16px); }
+.dir_left  { opacity: 0; transform: translateX(16px); }
+.dir_right { opacity: 0; transform: translateX(-16px); }
+.dir_none  { opacity: 0; transform: none; }
+
+/* ── Visible state ──────────────────────────────────────────────────────── */
+.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * Respect prefers-reduced-motion: remove transforms but keep the
+ * opacity fade so the reveal still conveys progression without
+ * causing motion sickness.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .dir_up,
+  .dir_down,
+  .dir_left,
+  .dir_right {
+    transform: none;
+  }
+  .reveal {
+    transition: opacity 200ms ease;
+  }
+}
