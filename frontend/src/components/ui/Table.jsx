@@ -13,7 +13,9 @@ import styles from './Table.module.css';
  *   sortKey   string | null              — currently sorted column key
  *   sortDir   'asc' | 'desc'
  *   onSort    (key: string) => void      — called when a sortable header is clicked
- *   empty     ReactNode                  — shown when rows is empty
+ *   empty       ReactNode                  — shown when rows is empty
+ *   onRowClick  (row) => void              — optional row click handler; adds pointer cursor
+ *   emptyMessage string                   — shorthand for empty when no custom node needed
  */
 export function Table({
   columns = [],
@@ -23,6 +25,8 @@ export function Table({
   sortDir = 'asc',
   onSort,
   empty,
+  emptyMessage,
+  onRowClick,
 }) {
   const get_key = typeof rowKey === 'function' ? rowKey : (row) => row[rowKey];
 
@@ -65,12 +69,19 @@ export function Table({
           {rows.length === 0 ? (
             <tr>
               <td colSpan={columns.length} className={styles.empty}>
-                {empty ?? 'No records found.'}
+                {empty ?? emptyMessage ?? 'No records found.'}
               </td>
             </tr>
           ) : (
             rows.map((row) => (
-              <tr key={get_key(row)} className={styles.tr}>
+              <tr
+                key={get_key(row)}
+                className={`${styles.tr} ${onRowClick ? styles.tr_clickable : ''}`}
+                onClick={onRowClick ? () => onRowClick(row) : undefined}
+                tabIndex={onRowClick ? 0 : undefined}
+                onKeyDown={onRowClick ? (e) => { if (e.key === 'Enter') onRowClick(row); } : undefined}
+                role={onRowClick ? 'button' : undefined}
+              >
                 {columns.map((col) => (
                   <td
                     key={col.key}
