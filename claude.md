@@ -32,7 +32,7 @@ including in `PROJECT_SPECIFICATION.md`, treat this file as authoritative instea
 - Hover state: `#6B4418`
 - Active state: `#4F3010`
 - Background: `#FAFAFA`
-- Typography: Space Grotesk
+- Typography: Plus Jakarta Sans
 - Border radius: minimal, 2-4px max — avoid heavily rounded "consumer app" aesthetics
 - Token source of truth: `frontend/src/styles/tokens.css` — never hardcode color, spacing,
   or radius values directly in component files; add missing values to tokens.css first.

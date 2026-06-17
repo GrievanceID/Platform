@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './layouts/ProtectedRoute';
 import { CitizenLayout } from './layouts/CitizenLayout';
+import { LandingPage } from './pages/public/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { GrievanceListPage } from './pages/citizen/GrievanceListPage';
 import { NewGrievancePage } from './pages/citizen/NewGrievancePage';
@@ -12,7 +13,8 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Public */}
+          {/* Public — no auth guard */}
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
 
           {/* Citizen-protected routes under the sidebar layout */}
@@ -27,9 +29,6 @@ export default function App() {
             <Route path="/grievances/new" element={<NewGrievancePage />} />
             <Route path="/grievances/:id" element={<GrievanceDetailPage />} />
           </Route>
-
-          {/* Root redirect — ProtectedRoute handles unauthenticated redirect to /login */}
-          <Route path="/" element={<Navigate to="/grievances/mine" replace />} />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
