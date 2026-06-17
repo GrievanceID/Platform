@@ -19,9 +19,23 @@ architectural decisions. This file is operating rules, not the spec itself.
 - NO CDN runtime dependencies (fonts, scripts, icon libs). Everything bundled at build time — this app must run fully air-gapped after initial setup.
 - Institutions are seeded DB rows (`institutions.seed.json`), never hardcoded in app code or frontend.
 - Authorization scoping (institution_id for employees, citizen_id for citizens) is ALWAYS derived server-side from the session/auth token. Never accept it as a client-supplied query param or body field. This is the single most important rule in this repo.
-- No design with gradient-heavy/SaaS-default aesthetics. Professional, restrained, government-appropriate visual style. Design tokens: Space Grotesk font, teal #0D7C7C, light theme (see spec for details).
+- No design with gradient-heavy/SaaS-default aesthetics. Professional, restrained, government-appropriate visual style. See Design Tokens section below — this supersedes any older references to teal elsewhere in this repo or its history.
 - Citizen identity fields must be excluded from Reviewer-facing API responses at the API layer, not filtered in the frontend.
 - Session VCs are immutable once issued. Corrections happen via separate linked records (CategoryOverride), never by mutating a signed record.
+
+## Design tokens
+
+Primary accent: deep burnt ochre `#8A5A1F` (NOT teal — teal was the original placeholder value
+in early planning docs and has been superseded; if you see `#0D7C7C` referenced anywhere,
+including in `PROJECT_SPECIFICATION.md`, treat this file as authoritative instead).
+
+- Hover state: `#6B4418`
+- Active state: `#4F3010`
+- Background: `#FAFAFA`
+- Typography: Plus Jakarta Sans
+- Border radius: minimal, 2-4px max — avoid heavily rounded "consumer app" aesthetics
+- Token source of truth: `frontend/src/styles/tokens.css` — never hardcode color, spacing,
+  or radius values directly in component files; add missing values to tokens.css first.
 
 ## Workflow conventions
 
@@ -35,4 +49,6 @@ architectural decisions. This file is operating rules, not the spec itself.
 
 - Full actors/use cases/data model/API surface: `/docs/PROJECT_SPECIFICATION.md`
 - Open/deferred decisions: Section 13 of the spec
-- If something in this file and the spec conflict, the spec wins for architecture; this file wins for day-to-day execution conventions.
+- If something in this file and the spec conflict, the spec wins for architecture; this file wins
+  for day-to-day execution conventions and design tokens specifically (the spec's color references
+  are stale — see Design Tokens above).

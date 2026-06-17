@@ -1,0 +1,36 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  font-family: var(--font-sans);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.submitted {
+  background-color: var(--status-submitted-bg);
+  color: var(--status-submitted-text);
+}
+.transcribed {
+  background-color: var(--status-transcribed-bg);
+  color: var(--status-transcribed-text);
+}
+.categorized {
+  background-color: var(--status-categorized-bg);
+  color: var(--status-categorized-text);
+}
+.pending {
+  background-color: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+.routed {
+  background-color: var(--status-routed-bg);
+  color: var(--status-routed-text);
+}
+.resolved {
+  background-color: var(--status-resolved-bg);
+  color: var(--status-resolved-text);
+}
