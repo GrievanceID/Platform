@@ -36,6 +36,12 @@ body {
   font-feature-settings: 'kern' 1;
 }
 
+/* Flip directional icons (arrows pointing right/forward) in RTL.
+   Apply class="rtl_flip" to any icon that implies direction. */
+[dir="rtl"] .rtl_flip {
+  transform: scaleX(-1);
+}
+
 /* Typography base */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);

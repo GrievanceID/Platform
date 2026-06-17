@@ -4,7 +4,7 @@
   width: var(--sidebar-width);
   flex-shrink: 0;
   background-color: var(--sidebar-bg);
-  border-right: 1px solid var(--sidebar-border);
+  border-inline-end: 1px solid var(--sidebar-border);
   min-height: 100dvh;
   position: sticky;
   top: 0;
@@ -36,29 +36,29 @@
   color: var(--color-text-muted);
   background: none;
   border: none;
-  border-left: 3px solid transparent;
+  border-inline-start: 3px solid transparent;
   cursor: pointer;
-  text-align: left;
+  text-align: start;
   transition:
     background-color var(--transition-fast),
     color var(--transition-fast),
     border-color var(--transition-fast);
   min-height: 40px;
-  border-radius: 0 var(--radius-base) var(--radius-base) 0;
+  border-start-end-radius: var(--radius-base);
+  border-end-end-radius: var(--radius-base);
 }
 
 .nav_item:hover {
   background-color: var(--accent-subtle);
   color: var(--color-text);
-  border-left-color: var(--accent-border);
+  border-inline-start-color: var(--accent-border);
 }
 
-/* Active state: ochre left border bar + subtle background.
-   Ochre is used as an indicator accent, NOT as a flood fill. */
+/* Active state: ochre inline-start border bar + subtle background. */
 .nav_item.active {
   background-color: var(--accent-subtle);
   color: var(--accent-hover);
-  border-left-color: var(--accent);
+  border-inline-start-color: var(--accent);
   font-weight: var(--weight-semibold);
 }
 

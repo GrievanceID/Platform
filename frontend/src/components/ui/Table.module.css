@@ -19,7 +19,7 @@
 
 .th {
   padding: var(--space-3) var(--space-4);
-  text-align: left;
+  text-align: start;
   font-weight: var(--weight-semibold);
   font-size: var(--text-xs);
   text-transform: uppercase;
@@ -76,7 +76,7 @@
 }
 
 .align_right {
-  text-align: right;
+  text-align: end;
 }
 .align_center {
   text-align: center;

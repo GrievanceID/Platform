@@ -8,10 +8,18 @@
   width: 100%;
 }
 
-.flip {
+/* In LTR: .flip reverses column order via rtl direction trick.
+   In RTL (Arabic document): the document is already rtl, so .flip
+   must apply ltr to restore normal (non-flipped) visual order.
+   Non-flipped sections in RTL need no change — grid column order
+   is already reversed by the document direction. */
+:global([dir="ltr"]) .flip {
   direction: rtl;
 }
-.flip > * {
+:global([dir="ltr"]) .flip > * {
+  direction: ltr;
+}
+:global([dir="rtl"]) .flip {
   direction: ltr;
 }
 
@@ -95,7 +103,9 @@
     grid-template-columns: 1fr;
     gap: var(--space-8);
   }
-  .flip {
-    direction: ltr;
+  /* At mobile, direction tricks are irrelevant — single column */
+  :global([dir="ltr"]) .flip,
+  :global([dir="rtl"]) .flip {
+    direction: unset;
   }
 }
