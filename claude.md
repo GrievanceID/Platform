@@ -21,6 +21,7 @@ architectural decisions. This file is operating rules, not the spec itself.
 - Authorization scoping (institution_id for employees, citizen_id for citizens) is ALWAYS derived server-side from the session/auth token. Never accept it as a client-supplied query param or body field. This is the single most important rule in this repo.
 - No design with gradient-heavy/SaaS-default aesthetics. Professional, restrained, government-appropriate visual style. See Design Tokens section below — this supersedes any older references to teal elsewhere in this repo or its history.
 - Citizen identity fields must be excluded from Reviewer-facing API responses at the API layer, not filtered in the frontend.
+- Every new page MUST use the i18n system from day one — no hardcoded user-facing strings in any frontend component. Add all keys to both `frontend/src/locales/ar.json` and `frontend/src/locales/fr.json` before writing JSX that uses them. Use `useTranslation()` from `react-i18next`.
 - Session VCs are immutable once issued. Corrections happen via separate linked records (CategoryOverride), never by mutating a signed record.
 
 ## Design tokens

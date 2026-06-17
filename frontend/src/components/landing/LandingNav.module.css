@@ -83,6 +83,24 @@
   flex-shrink: 0;
 }
 
+.lang_btn {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+.lang_btn:hover {
+  color: var(--accent);
+  border-color: var(--accent-border);
+}
+
 .hamburger {
   display: none;
   align-items: center;

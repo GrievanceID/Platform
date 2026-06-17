@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Mic, Upload, ShieldCheck, MapPin, BarChart3, Globe,
   Check, ArrowRight, Fingerprint, FileCheck, Clock, CheckCircle2,
-  Building2, Lock, Languages, Zap,
+  Building2, Lock, Languages, Zap, ListTodo,
 } from 'lucide-react';
 import { Button, InView } from '../../components/ui';
 import { LandingNav } from '../../components/landing/LandingNav';
@@ -11,92 +12,81 @@ import styles from './LandingPage.module.css';
 
 export function LandingPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className={styles.page}>
-      {/* FIX 1 — Navbar */}
       <LandingNav />
 
       <main>
-        {/* FIX 2 — Hero */}
+        {/* Hero */}
         <section id="home" className={styles.hero}>
           <div className={styles.container}>
             <div className={styles.hero_inner}>
               <div className={styles.hero_text}>
                 <InView direction="up">
-                  {/* PLACEHOLDER: replace */}
                   <div className={styles.hero_eyebrow}>
-                    <span className={styles.eyebrow_badge}>Kingdom of Morocco · Digital Services</span>
+                    <span className={styles.eyebrow_badge}>{t('landing.eyebrow')}</span>
                   </div>
                 </InView>
                 <InView direction="up" delay="60ms">
-                  {/* PLACEHOLDER: replace */}
                   <h1 className={styles.hero_heading}>
-                    Your grievance,<br />
-                    heard and tracked.
+                    {t('landing.hero_heading_1')}<br />
+                    {t('landing.hero_heading_2')}
                   </h1>
                 </InView>
                 <InView direction="up" delay="120ms">
-                  {/* PLACEHOLDER: replace */}
-                  <p className={styles.hero_sub}>
-                    A voice-first citizen grievance platform for Moroccan public services.
-                    Speak in Arabic or Darija, verify your identity, and follow your case
-                    from submission to resolution — all in one place.
-                  </p>
+                  <p className={styles.hero_sub}>{t('landing.hero_sub')}</p>
                 </InView>
                 <InView direction="up" delay="180ms">
                   <div className={styles.hero_actions}>
                     <Button variant="primary" size="lg" onClick={() => navigate('/grievances/new')}>
-                      Submit a grievance
+                      {t('landing.cta_submit')}
                     </Button>
                     <a href="#how-it-works" className={styles.hero_link} onClick={(e) => {
                       e.preventDefault();
                       document.querySelector('#how-it-works')?.scrollIntoView({ behavior: 'smooth' });
                     }}>
-                      How it works <ArrowRight size={14} />
+                      {t('landing.cta_how')} <ArrowRight size={14} className="rtl_flip" />
                     </a>
                   </div>
                 </InView>
               </div>
 
-              {/* Illustrative mockup panel */}
               <InView direction="up" delay="100ms">
                 <div className={styles.hero_panel}>
-                  <div className={styles.panel_header}>
-                    <span className={styles.panel_dot} />
-                    <span className={styles.panel_dot} />
-                    <span className={styles.panel_dot} />
-                    <span className={styles.panel_title}>My Grievances</span>
+                  <div className={styles.panel_chrome}>
+                    <div className={styles.panel_traffic}>
+                      <span className={styles.panel_dot_red} />
+                      <span className={styles.panel_dot_yellow} />
+                      <span className={styles.panel_dot_green} />
+                    </div>
+                    <div className={styles.panel_tab}>
+                      <span className={styles.panel_tab_icon}><ListTodo size={11} /></span>
+                      {t('landing.panel_title')}
+                    </div>
+                    <div className={styles.panel_tab_inactive}>
+                      <Clock size={11} />
+                      {t('landing.panel_tab_history')}
+                    </div>
+                  </div>
+                  <div className={styles.panel_thead}>
+                    <span className={styles.panel_th}>{t('landing.panel_col_ref')}</span>
+                    <span className={styles.panel_th}>{t('landing.panel_col_date')}</span>
+                    <span className={styles.panel_th}>{t('landing.panel_col_category')}</span>
+                    <span className={styles.panel_th}>{t('landing.panel_col_status')}</span>
                   </div>
                   <div className={styles.panel_body}>
-                    <MockGrievanceRow
-                      ref_id="A3F1C2"
-                      date="14 Jun 2026"
-                      category="Infrastructure"
-                      status="routed"
-                      status_label="Routed"
-                    />
-                    <MockGrievanceRow
-                      ref_id="B9D4E7"
-                      date="10 Jun 2026"
-                      category="Public Services"
-                      status="pending"
-                      status_label="Pending review"
-                    />
-                    <MockGrievanceRow
-                      ref_id="C2A8F0"
-                      date="03 Jun 2026"
-                      category="Health"
-                      status="resolved"
-                      status_label="Resolved"
-                    />
-                    <MockGrievanceRow
-                      ref_id="D5B1C9"
-                      date="28 May 2026"
-                      category="Transport"
-                      status="submitted"
-                      status_label="Submitted"
-                    />
+                    <MockGrievanceRow ref_id="A3F1C2" date="14 Jun 2026" category={t('mock.cat_infrastructure')}  status="routed"    status_label={t('status.routed')} />
+                    <MockGrievanceRow ref_id="B9D4E7" date="10 Jun 2026" category={t('mock.cat_public_services')} status="pending"   status_label={t('status.pending')} />
+                    <MockGrievanceRow ref_id="C2A8F0" date="03 Jun 2026" category={t('mock.cat_health')}          status="resolved"  status_label={t('status.resolved')} />
+                    <MockGrievanceRow ref_id="D5B1C9" date="28 May 2026" category={t('mock.cat_transport')}       status="submitted" status_label={t('status.submitted')} />
+                    <MockGrievanceRow ref_id="E1C3A6" date="19 May 2026" category={t('mock.cat_education')}       status="resolved"  status_label={t('status.resolved')} />
+                    <MockGrievanceRow ref_id="F7D2B8" date="05 May 2026" category={t('mock.cat_environment')}     status="routed"    status_label={t('status.routed')} />
+                  </div>
+                  <div className={styles.panel_statusbar}>
+                    <span className={styles.panel_statusbar_dot} />
+                    <span className={styles.panel_statusbar_text}>{t('landing.panel_statusbar')}</span>
                   </div>
                 </div>
               </InView>
@@ -104,184 +94,166 @@ export function LandingPage() {
           </div>
         </section>
 
-        {/* FIX 3 — Stats strip */}
+        {/* Stats strip */}
         <section className={styles.stats_strip}>
           <div className={styles.container}>
             <InView direction="up">
               <div className={styles.stats_row}>
-                {/* PLACEHOLDER: replace */}
-                <StatCard value="4,200+" label="Grievances processed" />
-                <StatCard value="17" label="Institutions connected" />
-                <StatCard value="3.4 days" label="Average response time" />
-                <StatCard value="94%" label="Resolution rate" />
+                <StatCard value={t('landing.stat_processed_value')}    label={t('landing.stat_processed_label')} />
+                <StatCard value={t('landing.stat_institutions_value')} label={t('landing.stat_institutions_label')} />
+                <StatCard value={t('landing.stat_response_value')}     label={t('landing.stat_response_label')} />
+                <StatCard value={t('landing.stat_resolution_value')}   label={t('landing.stat_resolution_label')} />
               </div>
             </InView>
           </div>
         </section>
 
-        {/* FIX 4 — Feature sections */}
+        {/* Feature sections */}
         <div id="features" className={styles.features_wrapper}>
           <div className={styles.container}>
-
             <InView direction="up">
               <FeatureSection
                 id="feature-voice"
-                tag="Voice Submission"
-                heading="Speak in Arabic or Darija — we understand both"
-                body="Record your grievance directly in the browser or upload an existing audio file. Our pipeline transcribes Arabic (MSA) and Moroccan Darija with confidence-based dialect routing, so nothing gets lost in translation."
+                tag={t('landing.feature_voice_tag')}
+                heading={t('landing.feature_voice_heading')}
+                body={t('landing.feature_voice_body')}
                 bullets={[
-                  { icon: <Mic size={14} />, label: 'In-browser recording via MediaRecorder API — no app download required' },
-                  { icon: <Upload size={14} />, label: 'Upload WAV, MP3, or OGG files up to 100 MB' },
-                  { icon: <Languages size={14} />, label: 'Arabic and Darija supported with hybrid WhisperX / MoulSot pipeline' },
+                  { icon: <Mic size={14} />,       label: t('landing.feature_voice_b1') },
+                  { icon: <Upload size={14} />,     label: t('landing.feature_voice_b2') },
+                  { icon: <Languages size={14} />,  label: t('landing.feature_voice_b3') },
                 ]}
-                panel={<FeaturePanel icon={<Mic size={40} />} bg="ochre" label="Voice-first intake" sublabel="Arabic · Darija · MSA" />}
+                panel={<FeaturePanel icon={<Mic size={40} />} bg="ochre" label={t('landing.feature_voice_panel_label')} sublabel={t('landing.feature_voice_panel_sub')} />}
               />
             </InView>
 
             <InView direction="up">
               <FeatureSection
                 id="feature-identity"
-                tag="Identity Verification"
+                tag={t('landing.feature_identity_tag')}
                 flip
-                heading="Your identity, verified — without exposing your data"
-                body="Authenticate using a digital identity wallet compatible with MOSIP and Inji Certify standards. Consent is captured as a cryptographically signed Verifiable Credential before any recording begins."
+                heading={t('landing.feature_identity_heading')}
+                body={t('landing.feature_identity_body')}
                 bullets={[
-                  { icon: <Fingerprint size={14} />, label: 'OpenID4VP-compatible wallet authentication' },
-                  { icon: <ShieldCheck size={14} />, label: 'Consent VC issued and signed before session starts' },
-                  { icon: <Lock size={14} />, label: 'Your identity is never shared with the reviewing officer' },
+                  { icon: <Fingerprint size={14} />, label: t('landing.feature_identity_b1') },
+                  { icon: <ShieldCheck size={14} />, label: t('landing.feature_identity_b2') },
+                  { icon: <Lock size={14} />,        label: t('landing.feature_identity_b3') },
                 ]}
-                panel={<FeaturePanel icon={<ShieldCheck size={40} />} bg="neutral" label="Privacy-preserving identity" sublabel="Inji · MOSIP · OpenID4VP" />}
+                panel={<FeaturePanel icon={<ShieldCheck size={40} />} bg="neutral" label={t('landing.feature_identity_panel_label')} sublabel={t('landing.feature_identity_panel_sub')} />}
               />
             </InView>
 
             <InView direction="up">
               <FeatureSection
                 id="feature-tracking"
-                tag="Real-time Tracking"
-                heading="Track your case from submission to resolution"
-                body="Every grievance gets a unique reference number and a live status you can check at any time. You receive updates as your case moves through transcription, review, routing, and resolution."
+                tag={t('landing.feature_tracking_tag')}
+                heading={t('landing.feature_tracking_heading')}
+                body={t('landing.feature_tracking_body')}
                 bullets={[
-                  { icon: <Clock size={14} />, label: 'Live status: Submitted → Transcribed → Pending Review → Routed → Resolved' },
-                  { icon: <FileCheck size={14} />, label: 'Immutable session record — nothing can be altered after signing' },
-                  { icon: <CheckCircle2 size={14} />, label: 'Submit follow-ups linked to your original case' },
+                  { icon: <Clock size={14} />,       label: t('landing.feature_tracking_b1') },
+                  { icon: <FileCheck size={14} />,   label: t('landing.feature_tracking_b2') },
+                  { icon: <CheckCircle2 size={14} />, label: t('landing.feature_tracking_b3') },
                 ]}
-                panel={<FeaturePanel icon={<BarChart3 size={40} />} bg="ochre" label="Case tracking" sublabel="Live status · Audit trail" />}
+                panel={<FeaturePanel icon={<BarChart3 size={40} />} bg="ochre" label={t('landing.feature_tracking_panel_label')} sublabel={t('landing.feature_tracking_panel_sub')} />}
               />
             </InView>
 
             <InView direction="up">
               <FeatureSection
                 id="feature-routing"
-                tag="Smart Routing"
+                tag={t('landing.feature_routing_tag')}
                 flip
-                heading="Routed to the right institution, confirmed by a human"
-                body="Our AI categorises your grievance and suggests the appropriate institution. A human reviewer confirms the routing before it is forwarded — so automated decisions never go unchecked."
+                heading={t('landing.feature_routing_heading')}
+                body={t('landing.feature_routing_body')}
                 bullets={[
-                  { icon: <MapPin size={14} />, label: 'NLP classification across 11 grievance categories' },
-                  { icon: <Building2 size={14} />, label: 'Mapped to 17 connected Moroccan public institutions' },
-                  { icon: <Check size={14} />, label: 'Mandatory human-in-the-loop confirmation before routing' },
+                  { icon: <MapPin size={14} />,    label: t('landing.feature_routing_b1') },
+                  { icon: <Building2 size={14} />, label: t('landing.feature_routing_b2') },
+                  { icon: <Check size={14} />,     label: t('landing.feature_routing_b3') },
                 ]}
-                panel={<FeaturePanel icon={<MapPin size={40} />} bg="neutral" label="Human-confirmed routing" sublabel="AI suggestion · Reviewer approval" />}
+                panel={<FeaturePanel icon={<MapPin size={40} />} bg="neutral" label={t('landing.feature_routing_panel_label')} sublabel={t('landing.feature_routing_panel_sub')} />}
               />
             </InView>
 
             <InView direction="up">
               <FeatureSection
                 id="feature-security"
-                tag="Tamper-Proof Records"
-                heading="Cryptographically signed session records"
-                body="Once a grievance is processed, a Session Verifiable Credential is issued — a signed, immutable record of the transcript hash, speaker labels, category, and routing decision. Corrections are additive, never destructive."
+                tag={t('landing.feature_security_tag')}
+                heading={t('landing.feature_security_heading')}
+                body={t('landing.feature_security_body')}
                 bullets={[
-                  { icon: <Lock size={14} />, label: 'Session VCs signed using W3C Verifiable Credentials standard' },
-                  { icon: <ShieldCheck size={14} />, label: 'Transcript hash anchors the record — alterations are detectable' },
-                  { icon: <FileCheck size={14} />, label: 'Category overrides logged as separate records, not edits' },
+                  { icon: <Lock size={14} />,      label: t('landing.feature_security_b1') },
+                  { icon: <ShieldCheck size={14} />, label: t('landing.feature_security_b2') },
+                  { icon: <FileCheck size={14} />, label: t('landing.feature_security_b3') },
                 ]}
-                panel={<FeaturePanel icon={<Lock size={40} />} bg="ochre" label="Signed session records" sublabel="W3C VCs · Inji Certify" />}
+                panel={<FeaturePanel icon={<Lock size={40} />} bg="ochre" label={t('landing.feature_security_panel_label')} sublabel={t('landing.feature_security_panel_sub')} />}
               />
             </InView>
 
             <InView direction="up">
               <FeatureSection
                 id="feature-access"
-                tag="Accessible by Design"
+                tag={t('landing.feature_access_tag')}
                 flip
-                heading="Designed for every citizen, not just tech users"
-                body="No paperwork, no office visit, no language barrier. The platform is built to work on low-bandwidth connections and supports right-to-left Arabic text throughout the interface."
+                heading={t('landing.feature_access_heading')}
+                body={t('landing.feature_access_body')}
                 bullets={[
-                  { icon: <Globe size={14} />, label: 'Arabic RTL interface support across all screens' },
-                  { icon: <Zap size={14} />, label: 'Runs fully offline after initial load — no cloud dependency' },
-                  { icon: <Mic size={14} />, label: 'Voice-first: no typing required to submit a grievance' },
+                  { icon: <Globe size={14} />, label: t('landing.feature_access_b1') },
+                  { icon: <Zap size={14} />,   label: t('landing.feature_access_b2') },
+                  { icon: <Mic size={14} />,   label: t('landing.feature_access_b3') },
                 ]}
-                panel={<FeaturePanel icon={<Globe size={40} />} bg="neutral" label="Inclusive access" sublabel="RTL · Offline · Voice" />}
+                panel={<FeaturePanel icon={<Globe size={40} />} bg="neutral" label={t('landing.feature_access_panel_label')} sublabel={t('landing.feature_access_panel_sub')} />}
               />
             </InView>
-
           </div>
         </div>
 
-        {/* FIX 5 — How it works */}
+        {/* How it works */}
         <section id="how-it-works" className={styles.how_section}>
           <div className={styles.container}>
             <InView direction="up">
               <div className={styles.how_header}>
-                {/* PLACEHOLDER: replace */}
-                <h2 className={styles.section_heading}>How it works</h2>
-                <p className={styles.section_sub}>
-                  From first login to resolution in four steps.
-                </p>
+                <h2 className={styles.section_heading}>{t('landing.how_heading')}</h2>
+                <p className={styles.section_sub}>{t('landing.how_sub')}</p>
               </div>
             </InView>
             <InView direction="up" delay="60ms">
               <ol className={styles.steps}>
-                {/* PLACEHOLDER: replace */}
-                <Step n={1} icon={<Fingerprint size={24} />} label="Verify your identity" desc="Log in with your citizen account or connect your Inji digital wallet to prove who you are — without sharing unnecessary personal data." />
-                <Step n={2} icon={<Mic size={24} />} label="Record or upload" desc="Speak your grievance in Arabic or Darija directly in the browser, or upload an audio file. Add written context if needed." />
-                <Step n={3} icon={<MapPin size={24} />} label="Review and routing" desc="Your submission is transcribed, categorised by AI, and confirmed by a human reviewer before being forwarded to the appropriate institution." />
-                <Step n={4} icon={<CheckCircle2 size={24} />} label="Track to resolution" desc="Follow your case with a reference number. The institution responds, marks it resolved, and a signed record is issued — permanently." />
+                <Step n={1} icon={<Fingerprint size={24} />} label={t('landing.step1_label')} desc={t('landing.step1_desc')} t={t} />
+                <Step n={2} icon={<Mic size={24} />}         label={t('landing.step2_label')} desc={t('landing.step2_desc')} t={t} />
+                <Step n={3} icon={<MapPin size={24} />}      label={t('landing.step3_label')} desc={t('landing.step3_desc')} t={t} />
+                <Step n={4} icon={<CheckCircle2 size={24} />} label={t('landing.step4_label')} desc={t('landing.step4_desc')} t={t} />
               </ol>
             </InView>
           </div>
         </section>
 
-        {/* Documentation anchor section */}
+        {/* Documentation */}
         <section id="documentation" className={styles.doc_section}>
           <div className={styles.container}>
             <InView direction="up">
               <div className={styles.doc_inner}>
                 <div>
-                  {/* PLACEHOLDER: replace */}
-                  <h2 className={styles.section_heading}>Built for government, open to scrutiny</h2>
-                  <p className={styles.section_sub} style={{ maxWidth: 520 }}>
-                    GrievanceID is a research prototype developed at Al Akhawayn University's Digital
-                    Innovation Lab as part of SURP'26. All architecture decisions, data models, and
-                    security trade-offs are documented openly.
-                  </p>
+                  <h2 className={styles.section_heading}>{t('landing.doc_heading')}</h2>
+                  <p className={styles.section_sub} style={{ maxWidth: 520 }}>{t('landing.doc_sub')}</p>
                 </div>
                 <div className={styles.doc_cards}>
-                  {/* PLACEHOLDER: replace */}
-                  <DocCard icon={<FileCheck size={20} />} title="System Specification" desc="Full actor model, API surface, data schema, and authorization rules." />
-                  <DocCard icon={<Lock size={20} />} title="Threat Model" desc="Security analysis of identity anchoring, VC issuance, and data boundaries." />
-                  <DocCard icon={<ShieldCheck size={20} />} title="Privacy Design" desc="How citizen identity is isolated from reviewer-facing data at the API layer." />
+                  <DocCard icon={<FileCheck size={20} />} title={t('landing.doc_card1_title')} desc={t('landing.doc_card1_desc')} />
+                  <DocCard icon={<Lock size={20} />}      title={t('landing.doc_card2_title')} desc={t('landing.doc_card2_desc')} />
+                  <DocCard icon={<ShieldCheck size={20} />} title={t('landing.doc_card3_title')} desc={t('landing.doc_card3_desc')} />
                 </div>
               </div>
             </InView>
           </div>
         </section>
 
-        {/* Contact anchor */}
+        {/* Contact */}
         <section id="contact" className={styles.contact_section}>
           <div className={styles.container}>
             <InView direction="up">
               <div className={styles.contact_inner}>
-                {/* PLACEHOLDER: replace */}
-                <h2 className={styles.contact_heading}>Questions or feedback?</h2>
-                <p className={styles.contact_sub}>
-                  This is a research project. We welcome institutional feedback, pilot partnership
-                  inquiries, and academic collaboration.
-                </p>
+                <h2 className={styles.contact_heading}>{t('landing.contact_heading')}</h2>
+                <p className={styles.contact_sub}>{t('landing.contact_sub')}</p>
                 <div className={styles.contact_details}>
-                  {/* PLACEHOLDER: replace */}
-                  <span>Digital Innovation Lab, Al Akhawayn University, Ifrane, Morocco</span>
+                  <span>{t('landing.contact_address')}</span>
                   <span>·</span>
                   <a href="mailto:dil@aui.ma" className={styles.contact_link}>dil@aui.ma</a>
                 </div>
@@ -291,7 +263,6 @@ export function LandingPage() {
         </section>
       </main>
 
-      {/* FIX 6 — Footer */}
       <footer className={styles.footer}>
         <div className={styles.container}>
           <div className={styles.footer_inner}>
@@ -300,45 +271,34 @@ export function LandingPage() {
                 <span className={styles.brand_mark_sm}>GID</span>
                 <span className={styles.footer_logo_name}>GrievanceID</span>
               </div>
-              {/* PLACEHOLDER: replace */}
-              <p className={styles.footer_tagline}>
-                Voice-first citizen grievance platform<br />
-                for Moroccan public services.
-              </p>
+              <p className={styles.footer_tagline}>{t('landing.footer_tagline')}</p>
             </div>
-
             <div className={styles.footer_cols}>
-              <FooterCol title="Platform">
-                {/* PLACEHOLDER: replace */}
-                <FooterLink href="#features">Features</FooterLink>
-                <FooterLink href="#how-it-works">How it works</FooterLink>
-                <FooterLink href="#documentation">Documentation</FooterLink>
-                <FooterLink href="#contact">Contact</FooterLink>
+              <FooterCol title={t('landing.footer_col_platform')}>
+                <FooterLink href="#features">{t('landing.footer_link_features')}</FooterLink>
+                <FooterLink href="#how-it-works">{t('landing.footer_link_how')}</FooterLink>
+                <FooterLink href="#documentation">{t('landing.footer_link_docs')}</FooterLink>
+                <FooterLink href="#contact">{t('landing.footer_link_contact')}</FooterLink>
               </FooterCol>
-              <FooterCol title="Actors">
-                {/* PLACEHOLDER: replace */}
-                <FooterLink href="/login">Citizen login</FooterLink>
-                <FooterLink href="/login">Reviewer login</FooterLink>
-                <FooterLink href="/login">Institution staff</FooterLink>
+              <FooterCol title={t('landing.footer_col_actors')}>
+                <FooterLink href="/login">{t('landing.footer_link_citizen')}</FooterLink>
+                <FooterLink href="/login">{t('landing.footer_link_reviewer')}</FooterLink>
+                <FooterLink href="/login">{t('landing.footer_link_staff')}</FooterLink>
               </FooterCol>
-              <FooterCol title="Research">
-                {/* PLACEHOLDER: replace */}
-                <FooterLink href="#documentation">SURP'26 — AUI</FooterLink>
-                <FooterLink href="#documentation">Inji / MOSIP integration</FooterLink>
-                <FooterLink href="#documentation">Threat model</FooterLink>
+              <FooterCol title={t('landing.footer_col_research')}>
+                <FooterLink href="#documentation">{t('landing.footer_link_surp')}</FooterLink>
+                <FooterLink href="#documentation">{t('landing.footer_link_inji')}</FooterLink>
+                <FooterLink href="#documentation">{t('landing.footer_link_threat')}</FooterLink>
               </FooterCol>
-              <FooterCol title="Legal">
-                {/* PLACEHOLDER: replace */}
-                <FooterLink href="#">Privacy notice</FooterLink>
-                <FooterLink href="#">Data processing</FooterLink>
-                <FooterLink href="#">Accessibility</FooterLink>
+              <FooterCol title={t('landing.footer_col_legal')}>
+                <FooterLink href="#">{t('landing.footer_link_privacy')}</FooterLink>
+                <FooterLink href="#">{t('landing.footer_link_data')}</FooterLink>
+                <FooterLink href="#">{t('landing.footer_link_accessibility')}</FooterLink>
               </FooterCol>
             </div>
           </div>
-
           <div className={styles.footer_bottom}>
-            {/* PLACEHOLDER: replace */}
-            <span>© 2026 GrievanceID — SURP'26, Digital Innovation Lab, Al Akhawayn University. Research prototype. Not a production service.</span>
+            <span>{t('landing.footer_bottom')}</span>
           </div>
         </div>
       </footer>
@@ -346,19 +306,18 @@ export function LandingPage() {
   );
 }
 
-/* ── Sub-components ─────────────────────────────────────────────────────────── */
+/* ── Sub-components ── */
 
 function StatCard({ value, label }) {
   return (
     <div className={styles.stat_card}>
-      {/* PLACEHOLDER: replace */}
       <span className={styles.stat_value}>{value}</span>
       <span className={styles.stat_label}>{label}</span>
     </div>
   );
 }
 
-function Step({ n, icon, label, desc }) {
+function Step({ n, icon, label, desc, t }) {
   return (
     <li className={styles.step}>
       <div className={styles.step_num_col}>
@@ -366,7 +325,7 @@ function Step({ n, icon, label, desc }) {
         <div className={styles.step_connector} />
       </div>
       <div className={styles.step_content}>
-        <div className={styles.step_n}>Step {n}</div>
+        <div className={styles.step_n}>{t('landing.step_n', { n })}</div>
         <h3 className={styles.step_label}>{label}</h3>
         <p className={styles.step_desc}>{desc}</p>
       </div>
@@ -390,7 +349,6 @@ function DocCard({ icon, title, desc }) {
   return (
     <div className={styles.doc_card}>
       <span className={styles.doc_card_icon}>{icon}</span>
-      {/* PLACEHOLDER: replace */}
       <h4 className={styles.doc_card_title}>{title}</h4>
       <p className={styles.doc_card_desc}>{desc}</p>
     </div>

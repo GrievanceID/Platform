@@ -48,6 +48,13 @@ export function AuthProvider({ children }) {
     return data.user;
   }, []);
 
+  // Stores a session that has already been validated by the caller.
+  // Used by LoginPage to do a role-match check before committing state.
+  const commit_session = useCallback((token_val, user_val) => {
+    set_token(token_val);
+    set_user(user_val);
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       await api_request('/auth/logout', { method: 'POST', token });
@@ -59,8 +66,8 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const value = useMemo(
-    () => ({ token, user, login, logout, is_authenticated: !!token }),
-    [token, user, login, logout]
+    () => ({ token, user, login, logout, commit_session, is_authenticated: !!token }),
+    [token, user, login, logout, commit_session]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

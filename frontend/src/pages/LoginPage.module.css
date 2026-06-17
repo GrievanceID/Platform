@@ -1,4 +1,6 @@
 .page {
+  width: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,29 +11,115 @@
 
 .container {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-5);
 }
 
+/* ── Logo / heading block ── */
 .heading_block {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logo_row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logo_mark {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  color: var(--color-text-inverse);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .app_name {
-  font-size: var(--text-2xl);
+  font-size: var(--text-xl);
   font-weight: var(--weight-semibold);
-  color: var(--accent);
+  color: var(--color-text);
   letter-spacing: -0.02em;
-  margin: 0 0 var(--space-1);
+  margin: 0;
 }
 
 .app_subtitle {
   font-size: var(--text-sm);
   color: var(--color-text-muted);
+  margin: 0;
 }
 
+/* ── Card shell (replaces <Card> so we control all padding directly) ── */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* ── Role tab switcher ── */
+.role_tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.role_tab {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+  text-align: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.role_tab:last-child {
+  border-right: none;
+}
+.role_tab:hover:not(:disabled) {
+  color: var(--color-text);
+  background-color: var(--accent-subtle);
+}
+.role_tab:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.role_tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.role_tab_active {
+  color: var(--accent);
+  font-weight: var(--weight-semibold);
+  background-color: var(--accent-subtle);
+  border-bottom-color: var(--accent);
+}
+
+/* ── Form body ── */
 .form_body {
   display: flex;
   flex-direction: column;
@@ -40,12 +128,31 @@
 }
 
 .form_title {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   font-weight: var(--weight-semibold);
   color: var(--color-text);
   margin: 0;
 }
 
+/* ── Language toggle ── */
+.lang_toggle {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+  transition: color var(--transition-fast);
+}
+.lang_toggle:hover {
+  color: var(--accent);
+}
+
+/* ── Error banner ── */
 .error_banner {
   font-size: var(--text-sm);
   color: #B91C1C;
@@ -53,4 +160,5 @@
   border: 1px solid #FECACA;
   border-radius: var(--radius-sm);
   padding: var(--space-3) var(--space-4);
+  line-height: var(--leading-normal);
 }
