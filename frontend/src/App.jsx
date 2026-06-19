@@ -4,6 +4,7 @@ import { ProtectedRoute } from './layouts/ProtectedRoute';
 import { CitizenLayout } from './layouts/CitizenLayout';
 import { StaffLayout } from './layouts/StaffLayout';
 import { LandingPage } from './pages/public/LandingPage';
+import { FeaturesPage } from './pages/public/FeaturesPage';
 import { LoginPage } from './pages/LoginPage';
 import { GrievanceListPage } from './pages/citizen/GrievanceListPage';
 import { NewGrievancePage } from './pages/citizen/NewGrievancePage';
@@ -21,6 +22,7 @@ export default function App() {
         <Routes>
           {/* Public */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
           <Route path="/login" element={<LoginPage />} />
 
           {/* Citizen */}

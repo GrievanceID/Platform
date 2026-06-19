@@ -10,6 +10,24 @@ import { LandingNav } from '../../components/landing/LandingNav';
 import { FeatureSection } from '../../components/landing/FeatureSection';
 import styles from './LandingPage.module.css';
 
+import logoChikaya        from '../../assets/institutions/chikaya.png';
+import logoIdarati        from '../../assets/institutions/idarati.png';
+import logoPndai          from '../../assets/institutions/pndai.png';
+import logoWatiqa         from '../../assets/institutions/watiqa.png';
+import logoRokhas         from '../../assets/institutions/rokhas.png';
+import logoMmsp           from '../../assets/institutions/mmsp.png';
+import logoMarchesPublics from '../../assets/institutions/marche public.png';
+
+const LOGOS = [
+  { src: logoChikaya,        alt: 'Chikaya',          href: 'https://www.chikaya.ma/' },
+  { src: logoIdarati,        alt: 'Idarati',          href: 'https://idarati.ma/' },
+  { src: logoPndai,          alt: 'PNDAI',            href: 'https://www.pndai.ma/' },
+  { src: logoWatiqa,         alt: 'Watiqa',           href: 'https://watiqa.ma/' },
+  { src: logoRokhas,         alt: 'Rokhas',           href: 'https://rokhas.ma/' },
+  { src: logoMmsp,           alt: 'MMSP',             href: 'https://www.mmsp.gov.ma/fr/accueil-dans-les-services-publics' },
+  { src: logoMarchesPublics, alt: 'Marchés Publics',  href: 'https://www.marchespublics.gov.ma/pmmp/' },
+];
+
 export function LandingPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -90,6 +108,16 @@ export function LandingPage() {
                   </div>
                 </div>
               </InView>
+            </div>
+          </div>
+        </section>
+
+        {/* Logo strip */}
+        <section className={styles.logo_strip_section}>
+          <div className={styles.logo_strip_track}>
+            <div className={styles.logo_strip_tape}>
+              <LogoSet logos={LOGOS} />
+              <LogoSet logos={LOGOS} aria_hidden />
             </div>
           </div>
         </section>
@@ -378,6 +406,25 @@ function FooterLink({ href, children }) {
         {children}
       </a>
     </li>
+  );
+}
+
+function LogoSet({ logos, aria_hidden }) {
+  return (
+    <div className={styles.logo_strip_set} aria-hidden={aria_hidden ? 'true' : undefined}>
+      {logos.map((logo) => (
+        <a
+          key={logo.alt}
+          href={logo.href}
+          className={styles.logo_strip_link}
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={aria_hidden ? -1 : undefined}
+        >
+          <img src={logo.src} alt={logo.alt} className={styles.logo_strip_img} />
+        </a>
+      ))}
+    </div>
   );
 }
 
