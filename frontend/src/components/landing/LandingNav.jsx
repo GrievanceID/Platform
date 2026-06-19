@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toggle_lang } from '../../i18n';
@@ -11,10 +11,11 @@ export function LandingNav() {
   const [scrolled, set_scrolled] = useState(false);
   const [mobile_open, set_mobile_open] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const on_landing = location.pathname === '/';
 
-  const NAV_LINKS = [
+  const ANCHOR_LINKS = [
     { label: t('nav.home'),          href: '#home' },
-    { label: t('nav.features'),      href: '#features' },
     { label: t('nav.how_it_works'),  href: '#how-it-works' },
     { label: t('nav.documentation'), href: '#documentation' },
     { label: t('nav.contact'),       href: '#contact' },
@@ -29,8 +30,14 @@ export function LandingNav() {
   function handle_anchor(e, href) {
     e.preventDefault();
     set_mobile_open(false);
-    if (href === '#home') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (on_landing) {
+      if (href === '#home') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // Not on landing — navigate there; browser will land at top for #home,
+      // or the hash will scroll after navigation for other anchors.
+      navigate(href === '#home' ? '/' : `/${href}`);
+    }
   }
 
   return (
@@ -42,12 +49,15 @@ export function LandingNav() {
         </a>
 
         <nav className={styles.links} aria-label={t('nav.home')}>
-          {NAV_LINKS.map((link) => (
+          {ANCHOR_LINKS.map((link) => (
             <a key={link.href} href={link.href} className={styles.link}
                onClick={(e) => handle_anchor(e, link.href)}>
               {link.label}
             </a>
           ))}
+          <Link to="/features" className={styles.link} onClick={() => set_mobile_open(false)}>
+            {t('nav.features')}
+          </Link>
         </nav>
 
         <div className={styles.ctas}>
@@ -78,12 +88,15 @@ export function LandingNav() {
       {mobile_open && (
         <div className={styles.mobile_drawer}>
           <nav>
-            {NAV_LINKS.map((link) => (
+            {ANCHOR_LINKS.map((link) => (
               <a key={link.href} href={link.href} className={styles.mobile_link}
                  onClick={(e) => handle_anchor(e, link.href)}>
                 {link.label}
               </a>
             ))}
+            <Link to="/features" className={styles.mobile_link} onClick={() => set_mobile_open(false)}>
+              {t('nav.features')}
+            </Link>
           </nav>
           <div className={styles.mobile_ctas}>
             <button type="button" className={styles.lang_btn} onClick={() => { set_mobile_open(false); toggle_lang(); }}>
