@@ -89,12 +89,12 @@
   color: var(--accent-hover);
 }
 
-/* ── Hero mockup panel — dark chrome ── */
+/* ── Hero mockup panel — light surface ── */
 .hero_panel {
-  background: #1A2030;
-  border: 1px solid #2D3A50;
+  background: #F5F0EB;
+  border: 1px solid #D6CEC4;
   border-radius: var(--radius-md);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   width: 100%;
   /* Bleed: extend panel to trailing viewport edge at desktop.
@@ -110,8 +110,8 @@
 .panel_chrome {
   display: flex;
   align-items: stretch;
-  background: #111827;
-  border-bottom: 1px solid #2D3A50;
+  background: #EDE6DC;
+  border-bottom: 1px solid #D6CEC4;
 }
 
 .panel_traffic {
@@ -120,7 +120,7 @@
   gap: 6px;
   padding: var(--space-3) var(--space-4);
   flex-shrink: 0;
-  border-right: 1px solid #2D3A50;
+  border-right: 1px solid #D6CEC4;
 }
 
 .panel_dot_red    { width: 10px; height: 10px; border-radius: 50%; background: #FF5F57; flex-shrink: 0; }
@@ -132,12 +132,12 @@
   align-items: center;
   gap: var(--space-2);
   padding: 0 var(--space-4);
-  background: #1A2030;
+  background: #F5F0EB;
   border-top: 2px solid #8A5A1F;
-  border-right: 1px solid #2D3A50;
+  border-right: 1px solid #D6CEC4;
   font-size: var(--text-xs);
   font-weight: var(--weight-medium);
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(0, 0, 0, 0.78);
   flex-shrink: 0;
 }
 
@@ -153,9 +153,9 @@
   gap: var(--space-2);
   padding: 0 var(--space-4);
   background: transparent;
-  border-right: 1px solid #2D3A50;
+  border-right: 1px solid #D6CEC4;
   font-size: var(--text-xs);
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(0, 0, 0, 0.35);
   flex-shrink: 0;
 }
 
@@ -166,8 +166,8 @@
   gap: var(--space-3);
   align-items: center;
   padding: 6px var(--space-4);
-  border-bottom: 1px solid #1F2A3C;
-  background: #111827;
+  border-bottom: 1px solid #D6CEC4;
+  background: #EDE6DC;
 }
 
 .panel_th {
@@ -175,7 +175,7 @@
   font-weight: var(--weight-semibold);
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .panel_body {
@@ -188,7 +188,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: 9px var(--space-4);
-  border-bottom: 1px solid #1F2A3C;
+  border-bottom: 1px solid #E2D9CE;
   font-size: var(--text-xs);
 }
 .mock_row:last-child {
@@ -198,9 +198,9 @@
 .mock_ref {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.45);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--radius-sm);
   padding: 1px 5px;
   letter-spacing: 0.04em;
@@ -208,15 +208,15 @@
 
 .mock_date {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.38);
+  color: rgba(0, 0, 0, 0.45);
 }
 
 .mock_category {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(0, 0, 0, 0.8);
   font-weight: var(--weight-medium);
 }
 
-/* Status badges — lightened for dark panel legibility */
+/* Status badges — standard subtle chips for light panel */
 .mock_badge {
   font-size: 10px;
   font-weight: var(--weight-semibold);
@@ -225,10 +225,10 @@
   white-space: nowrap;
 }
 
-.mock_badge_submitted { background: rgba(55, 48, 163, 0.35); color: #A5B4FC; border: 1px solid rgba(99, 102, 241, 0.3); }
-.mock_badge_pending   { background: rgba(146, 64, 14, 0.35);  color: #FCD34D; border: 1px solid rgba(180, 83, 9, 0.35); }
-.mock_badge_routed    { background: rgba(138, 90, 31, 0.3);   color: #E9B87A; border: 1px solid rgba(138, 90, 31, 0.45); }
-.mock_badge_resolved  { background: rgba(75, 85, 99, 0.35);   color: #9CA3AF; border: 1px solid rgba(107, 114, 128, 0.3); }
+.mock_badge_submitted { background: rgba(99, 102, 241, 0.1);  color: #4338CA; border: 1px solid rgba(99, 102, 241, 0.25); }
+.mock_badge_pending   { background: rgba(180, 83, 9, 0.1);    color: #92400E; border: 1px solid rgba(180, 83, 9, 0.25); }
+.mock_badge_routed    { background: rgba(138, 90, 31, 0.12);  color: #6B4418; border: 1px solid rgba(138, 90, 31, 0.3); }
+.mock_badge_resolved  { background: rgba(107, 114, 128, 0.1); color: #374151; border: 1px solid rgba(107, 114, 128, 0.25); }
 
 /* Status bar at panel bottom */
 .panel_statusbar {
@@ -236,8 +236,8 @@
   align-items: center;
   gap: var(--space-3);
   padding: 5px var(--space-4);
-  background: #111827;
-  border-top: 1px solid #2D3A50;
+  background: #EDE6DC;
+  border-top: 1px solid #D6CEC4;
 }
 
 .panel_statusbar_dot {
@@ -250,7 +250,7 @@
 
 .panel_statusbar_text {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(0, 0, 0, 0.4);
   letter-spacing: 0.03em;
 }
 
