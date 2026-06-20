@@ -26,12 +26,14 @@ architectural decisions. This file is operating rules, not the spec itself.
 
 ## Design tokens
 
-Primary accent: deep burnt ochre `#8A5A1F` (NOT teal — teal was the original placeholder value
-in early planning docs and has been superseded; if you see `#0D7C7C` referenced anywhere,
-including in `PROJECT_SPECIFICATION.md`, treat this file as authoritative instead).
+Primary accent: oxblood `#4A1620` (fourth iteration — supersedes ochre `#8A5A1F`, which
+superseded green, which superseded teal `#0D7C7C`; if you see any of those older values
+anywhere including in `PROJECT_SPECIFICATION.md`, treat this file as authoritative instead).
 
-- Hover state: `#6B4418`
-- Active state: `#4F3010`
+- Hover state: `#3A1018`
+- Active state: `#2A0A10`
+- Light tint / subtle bg: `#F5ECED` (pale oxblood-blush — noticeably softer than the old ochre tan)
+- Border accent: `#C4818E`
 - Background: `#FAFAFA`
 - Typography: Plus Jakarta Sans
 - Border radius: minimal, 2-4px max — avoid heavily rounded "consumer app" aesthetics
