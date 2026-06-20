@@ -14,6 +14,7 @@ export function GrievanceDetailPage() {
 
   const [grievance, set_grievance] = useState(null);
   const [institution, set_institution] = useState(null);
+  const [notes, set_notes] = useState([]);
   const [loading, set_loading] = useState(true);
   const [error, set_error] = useState('');
 
@@ -26,6 +27,8 @@ export function GrievanceDetailPage() {
         const { data } = await api_request(`/grievances/${id}`, { token });
         if (cancelled) return;
         set_grievance(data.grievance);
+        // Citizen-visible notes are returned in the same response (filtered server-side)
+        set_notes(data.notes ?? []);
 
         if (data.grievance?.institution_id) {
           try {
@@ -162,6 +165,20 @@ export function GrievanceDetailPage() {
               </p>
             )}
           </Card>
+
+          {/* ── Institution notes (citizen-visible only, filtered server-side) ── */}
+          {notes.length > 0 && (
+            <Card title={t('citizen.detail_section_notes')}>
+              <ul className={styles.notes_list}>
+                {notes.map((note) => (
+                  <li key={note.id} className={styles.note_item}>
+                    <p className={styles.note_date}>{format_date(note.created_at, i18n.language)}</p>
+                    <p className={styles.note_text}>{note.text}</p>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          )}
 
           {/* ── Follow-up CTA (only for resolved) ── */}
           {grievance.status === 'resolved' && (

@@ -16,15 +16,14 @@ router.use(authenticate, gate_role('employee'));
 // exclusively. Even if the client sends institution_id as a query param or body
 // field, it is NEVER read from req.query, req.body, or req.params for scoping.
 // The value never touches the WHERE clause unless it came from req.user.
+//
+// citizen_id is intentionally absent from all SELECT lists below. Employees
+// receive the grievance reference (g.id) as the only citizen-adjacent identifier.
 // ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
 // GET /grievances
 // Returns only grievances routed to req.user.institution_id.
-// Considered: should we read ?institution_id from the query string and validate
-// it matches the token? No — reading it at all (even to reject mismatches)
-// would invite subtle bugs where a future developer accidentally uses the
-// param value. We simply never reference req.query.institution_id.
 // ---------------------------------------------------------------------------
 router.get('/', async (req, res, next) => {
   const institution_id = req.user.institution_id; // ← token only, always
@@ -33,7 +32,6 @@ router.get('/', async (req, res, next) => {
     const { rows } = await pool.query(
       `SELECT
          g.id,
-         g.citizen_id,
          g.status,
          g.institution_id,
          g.related_grievance_id,
@@ -49,6 +47,7 @@ router.get('/', async (req, res, next) => {
        ORDER BY g.created_at DESC`,
       [institution_id]
     );
+    // citizen_id intentionally absent — reference ID (g.id) is the only identifier returned.
     return res.json({ grievances: rows });
   } catch (err) {
     next(err);
@@ -69,16 +68,13 @@ router.get('/:id', async (req, res, next) => {
     const { rows } = await pool.query(
       `SELECT
          g.id,
-         g.citizen_id,
          g.status,
          g.institution_id,
          g.related_grievance_id,
          g.flag_reason,
          g.created_at,
-         s.audio_file_ref,
          s.raw_transcript,
          s.diarized_transcript,
-         s.speaker_segments,
          cf.category,
          cf.urgency,
          cf.summary,
@@ -92,6 +88,7 @@ router.get('/:id', async (req, res, next) => {
          AND g.institution_id = $2`,
       [id, institution_id]
     );
+    // citizen_id intentionally absent — employees identify cases by g.id only.
     if (rows.length === 0) return res.status(404).json({ error: 'Not found' });
     return res.json({ grievance: rows[0] });
   } catch (err) {
@@ -134,18 +131,49 @@ router.patch('/:id/status', async (req, res, next) => {
 });
 
 // ---------------------------------------------------------------------------
+// GET /grievances/:id/notes
+// Returns all notes for a grievance (both internal and citizen-visible).
+// Only accessible to authenticated employees at the correct institution.
+// ---------------------------------------------------------------------------
+router.get('/:id/notes', async (req, res, next) => {
+  const institution_id = req.user.institution_id; // ← token only
+  const { id: grievance_id } = req.params;
+
+  try {
+    // Scope check in the JOIN — if grievance doesn't belong to this institution, zero rows.
+    const { rows } = await pool.query(
+      `SELECT n.id, n.grievance_id, n.author_id, n.text, n.is_citizen_visible, n.created_at
+       FROM grievance_notes n
+       JOIN grievances g ON g.id = n.grievance_id
+       WHERE n.grievance_id = $1
+         AND g.institution_id = $2
+       ORDER BY n.created_at ASC`,
+      [grievance_id, institution_id]
+    );
+    return res.json({ notes: rows });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// ---------------------------------------------------------------------------
 // POST /grievances/:id/notes
 // author_id ← req.user.id (token). Never from body.
+// is_citizen_visible: boolean from body, defaults to false (internal).
+// Employee must explicitly opt-in to citizen-visibility per note.
 // ---------------------------------------------------------------------------
 router.post('/:id/notes', async (req, res, next) => {
   const institution_id = req.user.institution_id; // ← token for scoping check
   const author_id = req.user.id;                  // ← token for authorship
   const { id: grievance_id } = req.params;
-  const { text } = req.body ?? {};
+  const { text, is_citizen_visible } = req.body ?? {};
 
   if (!text || typeof text !== 'string' || text.trim().length === 0) {
     return res.status(400).json({ error: 'Note text is required' });
   }
+
+  // Coerce to boolean, default false (internal). Never trust a truthy string.
+  const visible = is_citizen_visible === true;
 
   const client = await pool.connect();
   try {
@@ -162,10 +190,10 @@ router.post('/:id/notes', async (req, res, next) => {
     }
 
     const { rows } = await client.query(
-      `INSERT INTO grievance_notes (grievance_id, author_id, text)
-       VALUES ($1, $2, $3)
-       RETURNING id, grievance_id, author_id, text, created_at`,
-      [grievance_id, author_id, text.trim()]
+      `INSERT INTO grievance_notes (grievance_id, author_id, text, is_citizen_visible)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, grievance_id, author_id, text, is_citizen_visible, created_at`,
+      [grievance_id, author_id, text.trim(), visible]
     );
 
     await client.query('COMMIT');
@@ -215,8 +243,6 @@ router.post('/:id/flag', async (req, res, next) => {
 // Creates a CategoryOverride record (additive only — FR-6).
 // Does NOT mutate case_files.category or any SessionVC.
 // body: { new_institution_category, reason? }
-// The override tracks the institution routing bucket (institution_category),
-// not Mira's grievance_category label — consistent with the override table schema.
 // ---------------------------------------------------------------------------
 const VALID_INSTITUTION_CATEGORIES = [
   'health', 'transport', 'municipality', 'education',
@@ -239,7 +265,6 @@ router.post('/:id/override-category', async (req, res, next) => {
   try {
     await client.query('BEGIN');
 
-    // Scope + current-category fetch in one query.
     const { rows: g_rows } = await client.query(
       `SELECT g.id, i.category AS current_institution_category
        FROM grievances g
@@ -254,7 +279,6 @@ router.post('/:id/override-category', async (req, res, next) => {
 
     const old_category = g_rows[0].current_institution_category;
 
-    // Additive record only — case_files and session_vcs are untouched (FR-6).
     const { rows } = await client.query(
       `INSERT INTO category_overrides
          (grievance_id, requested_by, old_category, new_category, reason)

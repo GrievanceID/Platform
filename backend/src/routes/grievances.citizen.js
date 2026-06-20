@@ -136,7 +136,21 @@ router.get('/:id', async (req, res, next) => {
     // citizen_id in the WHERE clause means a row belonging to another citizen
     // produces zero rows — indistinguishable from a non-existent grievance.
     if (rows.length === 0) return res.status(404).json({ error: 'Not found' });
-    return res.json({ grievance: rows[0] });
+
+    // Fetch citizen-visible notes only — internal notes are filtered server-side
+    // and never present in this response, even as an empty field.
+    // This query is safe to run even if grievance_notes.is_citizen_visible doesn't
+    // exist yet (migration 002 must be applied first).
+    const { rows: note_rows } = await pool.query(
+      `SELECT id, text, created_at
+       FROM grievance_notes
+       WHERE grievance_id = $1
+         AND is_citizen_visible = TRUE
+       ORDER BY created_at ASC`,
+      [id]
+    );
+
+    return res.json({ grievance: rows[0], notes: note_rows });
   } catch (err) {
     next(err);
   }

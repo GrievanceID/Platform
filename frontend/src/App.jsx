@@ -14,6 +14,7 @@ import { HelpPage } from './pages/citizen/HelpPage';
 import { ReviewerQueuePage } from './pages/reviewer/ReviewerQueuePage';
 import { ReviewerCasePage } from './pages/reviewer/ReviewerCasePage';
 import { EmployeeDashboardPage } from './pages/employee/EmployeeDashboardPage';
+import { EmployeeCasePage } from './pages/employee/EmployeeCasePage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminEmployeesPage } from './pages/admin/AdminEmployeesPage';
 import { AdminStatsPage } from './pages/admin/AdminStatsPage';
@@ -64,6 +65,7 @@ export default function App() {
             }
           >
             <Route path="/employee/dashboard" element={<EmployeeDashboardPage />} />
+            <Route path="/employee/cases/:id" element={<EmployeeCasePage />} />
           </Route>
 
           {/* Admin */}
