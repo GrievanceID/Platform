@@ -205,6 +205,35 @@ router.get('/stats', async (req, res, next) => {
 const employees_router = Router();
 employees_router.use(authenticate, require_role('admin'));
 
+// GET /employees — list all users with role='employee', joined to institution name.
+// Returns a de-identified list (no password_hash). Admin-only.
+employees_router.get('/', async (req, res, next) => {
+  const { institution_id } = req.query; // optional filter (Admin sees all; this is a filter, not a scope gate)
+
+  const conditions = [`u.role = 'employee'`];
+  const params = [];
+  if (institution_id) {
+    params.push(institution_id);
+    conditions.push(`u.institution_id = $${params.length}`);
+  }
+  const where = `WHERE ${conditions.join(' AND ')}`;
+
+  try {
+    const { rows } = await pool.query(
+      `SELECT u.id, u.email, u.institution_id, u.created_at,
+              i.name AS institution_name
+       FROM users u
+       LEFT JOIN institutions i ON i.id = u.institution_id
+       ${where}
+       ORDER BY i.name ASC, u.email ASC`,
+      params
+    );
+    return res.json({ employees: rows });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // POST /employees — create an employee account.
 // Admin sets role='employee' and institution_id. Citizen self-registration
 // (POST /auth/register) is the only other user-creation path and is locked

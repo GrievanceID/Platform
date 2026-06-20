@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Card, Button, StatusBadge } from '../../components/ui';
+import { Card, Button, StatusBadge, ReportIssueModal } from '../../components/ui';
 import { useAuth } from '../../context/AuthContext';
 import { api_request } from '../../api/client';
 import styles from './EmployeeCasePage.module.css';
@@ -24,6 +24,9 @@ export function EmployeeCasePage() {
   const [notes, set_notes] = useState([]);
   const [loading, set_loading] = useState(true);
   const [error, set_error] = useState('');
+
+  // Flag/report state
+  const [show_flag_modal, set_show_flag_modal] = useState(false);
 
   // Status action
   const [resolving, set_resolving] = useState(false);
@@ -117,6 +120,14 @@ export function EmployeeCasePage() {
         </button>
       </div>
 
+      {show_flag_modal && (
+        <ReportIssueModal
+          token={token}
+          grievance_id={id}
+          onClose={() => set_show_flag_modal(false)}
+        />
+      )}
+
       {loading && <p className={styles.loading}>{t('employee.case_loading')}</p>}
       {error && <p className={styles.error_msg} role="alert">{error}</p>}
 
@@ -125,11 +136,20 @@ export function EmployeeCasePage() {
 
           {/* ── Case header ── */}
           <div className={styles.case_header}>
-            <h1 className={styles.case_title}>
-              {t('employee.case_title')}
-              <span className={styles.case_ref}>{g.id.slice(0, 8).toUpperCase()}</span>
-            </h1>
-            <StatusBadge status={g.status} />
+            <div className={styles.case_header_left}>
+              <h1 className={styles.case_title}>
+                {t('employee.case_title')}
+                <span className={styles.case_ref}>{g.id.slice(0, 8).toUpperCase()}</span>
+              </h1>
+              <StatusBadge status={g.status} />
+            </div>
+            <button
+              type="button"
+              className={styles.flag_link}
+              onClick={() => set_show_flag_modal(true)}
+            >
+              {t('flag.btn_label')}
+            </button>
           </div>
 
           {/* ── Info card ── */}

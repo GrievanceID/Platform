@@ -18,6 +18,7 @@ import { EmployeeCasePage } from './pages/employee/EmployeeCasePage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminEmployeesPage } from './pages/admin/AdminEmployeesPage';
 import { AdminStatsPage } from './pages/admin/AdminStatsPage';
+import { AdminIssuesPage } from './pages/admin/AdminIssuesPage';
 
 export default function App() {
   return (
@@ -79,6 +80,7 @@ export default function App() {
             <Route path="/admin/dashboard"  element={<AdminDashboardPage />} />
             <Route path="/admin/employees"  element={<AdminEmployeesPage />} />
             <Route path="/admin/stats"      element={<AdminStatsPage />} />
+            <Route path="/admin/issues"     element={<AdminIssuesPage />} />
           </Route>
 
           {/* Catch-all */}

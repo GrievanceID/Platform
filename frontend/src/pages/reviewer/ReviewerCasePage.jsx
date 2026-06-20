@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Card, Button, StatusBadge } from '../../components/ui';
+import { Card, Button, StatusBadge, ReportIssueModal } from '../../components/ui';
 import { useAuth } from '../../context/AuthContext';
 import { api_request } from '../../api/client';
 import styles from './ReviewerCasePage.module.css';
@@ -48,6 +48,9 @@ export function ReviewerCasePage() {
   const [institutions, set_institutions] = useState([]);
   const [loading, set_loading] = useState(true);
   const [error, set_error] = useState('');
+
+  // Flag/report state
+  const [show_flag_modal, set_show_flag_modal] = useState(false);
 
   // Action state
   const [overriding, set_overriding] = useState(false);
@@ -175,6 +178,14 @@ export function ReviewerCasePage() {
       {loading && <p className={styles.loading}>{t('reviewer.case_loading')}</p>}
       {error && <p className={styles.error_msg} role="alert">{error}</p>}
 
+      {show_flag_modal && (
+        <ReportIssueModal
+          token={token}
+          grievance_id={id}
+          onClose={() => set_show_flag_modal(false)}
+        />
+      )}
+
       {!loading && !error && g && (
         <div className={styles.sections}>
 
@@ -206,6 +217,13 @@ export function ReviewerCasePage() {
                 )}
               </div>
             </div>
+            <button
+              type="button"
+              className={styles.flag_link}
+              onClick={() => set_show_flag_modal(true)}
+            >
+              {t('flag.btn_label')}
+            </button>
           </div>
 
           {/* ── Transcript ── */}

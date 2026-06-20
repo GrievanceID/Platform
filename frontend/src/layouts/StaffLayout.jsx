@@ -22,6 +22,7 @@ export function StaffLayout() {
       { key: '/admin/dashboard',  label: t('admin.nav_grievances'), icon: <ListIcon /> },
       { key: '/admin/employees',  label: t('admin.nav_employees'),  icon: <PeopleIcon /> },
       { key: '/admin/stats',      label: t('admin.nav_stats'),      icon: <ChartIcon /> },
+      { key: '/admin/issues',     label: t('admin.nav_issues'),     icon: <FlagIcon /> },
     ],
   };
 
@@ -104,6 +105,15 @@ function ChartIcon() {
       <rect x="1"  y="9"  width="3" height="5" rx="0.5" fill="currentColor" />
       <rect x="6"  y="5"  width="3" height="9" rx="0.5" fill="currentColor" />
       <rect x="11" y="2"  width="3" height="12" rx="0.5" fill="currentColor" />
+    </svg>
+  );
+}
+
+function FlagIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 2v12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M3 2.5h8.5l-2 3.5 2 3.5H3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
