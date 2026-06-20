@@ -14,13 +14,14 @@
 
 .header {
   padding: var(--space-6) var(--space-4) var(--space-4);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--sidebar-divider);
   flex-shrink: 0;
 }
 
 .nav_list {
   list-style: none;
-  padding: var(--space-3) 0;
+  padding: var(--space-3) var(--space-2);
+  margin: 0;
   flex: 1;
 }
 
@@ -29,36 +30,30 @@
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
-  color: var(--color-text-muted);
+  color: var(--sidebar-text);
   background: none;
   border: none;
-  border-inline-start: 3px solid transparent;
+  border-radius: var(--radius-base);
   cursor: pointer;
   text-align: start;
   transition:
     background-color var(--transition-fast),
-    color var(--transition-fast),
-    border-color var(--transition-fast);
+    color var(--transition-fast);
   min-height: 40px;
-  border-start-end-radius: var(--radius-base);
-  border-end-end-radius: var(--radius-base);
 }
 
 .nav_item:hover {
-  background-color: var(--accent-subtle);
-  color: var(--color-text);
-  border-inline-start-color: var(--accent-border);
+  background-color: var(--sidebar-nav-hover-bg);
+  color: var(--sidebar-text-active);
 }
 
-/* Active state: ochre inline-start border bar + subtle background. */
 .nav_item.active {
-  background-color: var(--accent-subtle);
-  color: var(--accent-hover);
-  border-inline-start-color: var(--accent);
+  background-color: var(--sidebar-nav-active-bg);
+  color: var(--sidebar-text-active);
   font-weight: var(--weight-semibold);
 }
 
@@ -81,8 +76,6 @@
 
 .footer {
   padding: var(--space-4);
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--sidebar-divider);
   flex-shrink: 0;
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
 }

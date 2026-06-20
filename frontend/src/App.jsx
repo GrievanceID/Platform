@@ -9,6 +9,8 @@ import { LoginPage } from './pages/LoginPage';
 import { GrievanceListPage } from './pages/citizen/GrievanceListPage';
 import { NewGrievancePage } from './pages/citizen/NewGrievancePage';
 import { GrievanceDetailPage } from './pages/citizen/GrievanceDetailPage';
+import { ProfilePage } from './pages/citizen/ProfilePage';
+import { HelpPage } from './pages/citizen/HelpPage';
 import { ReviewerQueuePage } from './pages/reviewer/ReviewerQueuePage';
 import { EmployeeDashboardPage } from './pages/employee/EmployeeDashboardPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
@@ -36,6 +38,8 @@ export default function App() {
             <Route path="/grievances/mine" element={<GrievanceListPage />} />
             <Route path="/grievances/new"  element={<NewGrievancePage />} />
             <Route path="/grievances/:id"  element={<GrievanceDetailPage />} />
+            <Route path="/profile"         element={<ProfilePage />} />
+            <Route path="/help"            element={<HelpPage />} />
           </Route>
 
           {/* Reviewer */}

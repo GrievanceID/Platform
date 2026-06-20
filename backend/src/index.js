@@ -8,6 +8,7 @@ const citizen_grievances_router = require('./routes/grievances.citizen');
 const reviewer_grievances_router = require('./routes/grievances.reviewer');
 const employee_grievances_router = require('./routes/grievances.employee');
 const { grievances_router: admin_grievances_router, employees_router } = require('./routes/grievances.admin');
+const users_router = require('./routes/users');
 
 const app = express();
 
@@ -29,6 +30,9 @@ app.use('/grievances', admin_grievances_router);
 
 // Admin employee management — separate mount so paths are /employees/* not /grievances/employees/*
 app.use('/employees', employees_router);
+
+// User profile — any authenticated role may read their own record
+app.use('/users', users_router);
 
 // Catch-all for undefined routes
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));

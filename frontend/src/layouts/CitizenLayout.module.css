@@ -5,13 +5,20 @@
   background-color: var(--color-bg);
 }
 
+/* Main content area — flex: 1 fills remaining width, min-width: 0 prevents
+   flex child from overflowing. display: flex + flex-direction: column allows
+   the <Outlet> child to use margin: 0 auto for horizontal centering. */
 .content {
   flex: 1;
   min-width: 0;
-  padding: var(--space-8) var(--space-8);
+  padding: var(--space-8);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* horizontally centers block children */
 }
 
+/* ── Sidebar header slot ── */
 .brand {
   display: flex;
   align-items: center;
@@ -21,10 +28,11 @@
 .brand_name {
   font-size: var(--text-base);
   font-weight: var(--weight-semibold);
-  color: var(--color-text);
+  color: var(--sidebar-text-active);
   letter-spacing: -0.01em;
 }
 
+/* ── Sidebar footer slot ── */
 .user_footer {
   display: flex;
   flex-direction: column;
@@ -33,7 +41,7 @@
 
 .user_email {
   font-size: var(--text-xs);
-  color: var(--color-text-muted);
+  color: var(--sidebar-text-muted);
   word-break: break-all;
 }
 
@@ -41,9 +49,9 @@
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: var(--weight-medium);
-  color: var(--color-text-muted);
+  color: var(--sidebar-text);
   background: none;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--sidebar-divider);
   border-radius: var(--radius-sm);
   padding: 2px var(--space-2);
   cursor: pointer;
@@ -51,15 +59,15 @@
   transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 .lang_btn:hover {
-  color: var(--accent);
-  border-color: var(--accent-border);
+  color: var(--sidebar-text-active);
+  border-color: rgba(255, 255, 255, 0.30);
 }
 
 .logout_btn {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: var(--weight-medium);
-  color: var(--color-text-muted);
+  color: var(--sidebar-text-muted);
   background: none;
   border: none;
   padding: 0;
@@ -68,5 +76,32 @@
   transition: color var(--transition-fast);
 }
 .logout_btn:hover {
-  color: var(--accent);
+  color: var(--sidebar-text-active);
+}
+
+/* ── Notification badge on nav label ── */
+.nav_label_with_badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav_badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 10px;
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  color: var(--sidebar-nav-active-bg);
+  background-color: var(--sidebar-text-active);
+  border-radius: 9px;
+  flex-shrink: 0;
 }

@@ -8,12 +8,61 @@ import styles from './NewGrievancePage.module.css';
 
 const ACCEPTED_AUDIO = ['audio/wav', 'audio/mpeg', 'audio/ogg', 'audio/webm', 'audio/mp4'];
 
+// Draft helpers — localStorage only, nothing is sent to backend until submit.
+// Keyed per user to prevent cross-account contamination.
+function draft_key(user_id) { return `gid_draft_${user_id}`; }
+
+function load_draft(user_id) {
+  try {
+    const raw = localStorage.getItem(draft_key(user_id));
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function save_draft(user_id, description) {
+  try {
+    if (description.trim()) {
+      localStorage.setItem(draft_key(user_id), JSON.stringify({ description }));
+    }
+  } catch {}
+}
+
+function clear_draft(user_id) {
+  try { localStorage.removeItem(draft_key(user_id)); } catch {}
+}
+
 const REC = { IDLE: 'idle', RECORDING: 'recording', PAUSED: 'paused', DONE: 'done' };
 
 export function NewGrievancePage() {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  // Draft restore state — shown as a banner before the form
+  const [draft_prompt, set_draft_prompt] = useState(null); // null | { description }
+  const [draft_dismissed, set_draft_dismissed] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const saved = load_draft(user.id);
+    if (saved?.description?.trim()) {
+      set_draft_prompt(saved);
+    }
+  }, [user?.id]);
+
+  function handle_resume_draft() {
+    if (draft_prompt) {
+      set_description(draft_prompt.description);
+    }
+    set_draft_prompt(null);
+    set_draft_dismissed(true);
+  }
+
+  function handle_discard_draft() {
+    if (user?.id) clear_draft(user.id);
+    set_draft_prompt(null);
+    set_draft_dismissed(true);
+  }
 
   const [mode, set_mode] = useState('record');
   const [rec_state, set_rec_state] = useState(REC.IDLE);
@@ -30,6 +79,14 @@ export function NewGrievancePage() {
   const [description, set_description] = useState('');
   const [submitting, set_submitting] = useState(false);
   const [submit_error, set_submit_error] = useState('');
+
+  // Auto-save description to localStorage as the user types.
+  // Only fires after draft_dismissed (no draft prompt pending), so we don't
+  // overwrite a draft before the user has had a chance to restore it.
+  useEffect(() => {
+    if (!user?.id || !draft_dismissed) return;
+    save_draft(user.id, description);
+  }, [description, user?.id, draft_dismissed]);
 
   useEffect(() => {
     return () => {
@@ -139,6 +196,7 @@ export function NewGrievancePage() {
         token,
       });
 
+      if (user?.id) clear_draft(user.id);
       navigate(`/grievances/${data.grievance.id}`, { replace: false });
     } catch (err) {
       set_submit_error(err.message ?? t('submit.submit_error'));
@@ -155,6 +213,23 @@ export function NewGrievancePage() {
           <p className={styles.page_desc}>{t('submit.desc')}</p>
         </div>
       </InView>
+
+      {draft_prompt && (
+        <div className={styles.draft_banner} role="alert">
+          <div className={styles.draft_banner_text}>
+            <strong className={styles.draft_banner_title}>{t('citizen.draft_banner_title')}</strong>
+            <span>{t('citizen.draft_banner_body')}</span>
+          </div>
+          <div className={styles.draft_banner_actions}>
+            <button type="button" className={styles.draft_resume_btn} onClick={handle_resume_draft}>
+              {t('citizen.draft_resume_btn')}
+            </button>
+            <button type="button" className={styles.draft_discard_btn} onClick={handle_discard_draft}>
+              {t('citizen.draft_discard_btn')}
+            </button>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handle_submit} noValidate>
         <div className={styles.sections}>
