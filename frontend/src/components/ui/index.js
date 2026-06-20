@@ -6,3 +6,4 @@ export { StatusBadge } from './StatusBadge';
 export { Sidebar } from './Sidebar';
 export { InView } from './InView';
 export { StatusTimeline } from './StatusTimeline';
+export { ReportIssueModal } from './ReportIssueModal';

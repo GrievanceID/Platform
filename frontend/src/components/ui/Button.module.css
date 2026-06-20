@@ -83,6 +83,21 @@
   color: #7F1D1D;
 }
 
+/* ── Ghost (text-only, no background) ──────────────────────────────────── */
+.ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--color-text-muted);
+}
+.ghost:hover:not(:disabled) {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+.ghost:active:not(:disabled) {
+  background-color: var(--color-border);
+  color: var(--color-text);
+}
+
 /* ── Disabled (all variants) ────────────────────────────────────────────── */
 .btn:disabled,
 .disabled {

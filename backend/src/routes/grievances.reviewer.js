@@ -2,12 +2,13 @@
 
 const { Router } = require('express');
 const pool = require('../db/pool');
-const { authenticate, require_role } = require('../middleware/auth');
+const { authenticate, gate_role } = require('../middleware/auth');
 const { write_audit } = require('../db/audit');
 
 const router = Router();
 
-router.use(authenticate, require_role('reviewer'));
+// gate_role (not require_role) so a non-reviewer role skips to the next mounted router.
+router.use(authenticate, gate_role('reviewer'));
 
 // ---------------------------------------------------------------------------
 // Reviewer de-identification contract (FR-5, Section 8):

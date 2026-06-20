@@ -12,10 +12,13 @@ import { GrievanceDetailPage } from './pages/citizen/GrievanceDetailPage';
 import { ProfilePage } from './pages/citizen/ProfilePage';
 import { HelpPage } from './pages/citizen/HelpPage';
 import { ReviewerQueuePage } from './pages/reviewer/ReviewerQueuePage';
+import { ReviewerCasePage } from './pages/reviewer/ReviewerCasePage';
 import { EmployeeDashboardPage } from './pages/employee/EmployeeDashboardPage';
+import { EmployeeCasePage } from './pages/employee/EmployeeCasePage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminEmployeesPage } from './pages/admin/AdminEmployeesPage';
 import { AdminStatsPage } from './pages/admin/AdminStatsPage';
+import { AdminIssuesPage } from './pages/admin/AdminIssuesPage';
 
 export default function App() {
   return (
@@ -50,7 +53,8 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="/reviewer/queue" element={<ReviewerQueuePage />} />
+            <Route path="/reviewer/queue"     element={<ReviewerQueuePage />} />
+            <Route path="/reviewer/queue/:id" element={<ReviewerCasePage />} />
           </Route>
 
           {/* Employee */}
@@ -62,6 +66,7 @@ export default function App() {
             }
           >
             <Route path="/employee/dashboard" element={<EmployeeDashboardPage />} />
+            <Route path="/employee/cases/:id" element={<EmployeeCasePage />} />
           </Route>
 
           {/* Admin */}
@@ -75,6 +80,7 @@ export default function App() {
             <Route path="/admin/dashboard"  element={<AdminDashboardPage />} />
             <Route path="/admin/employees"  element={<AdminEmployeesPage />} />
             <Route path="/admin/stats"      element={<AdminStatsPage />} />
+            <Route path="/admin/issues"     element={<AdminIssuesPage />} />
           </Route>
 
           {/* Catch-all */}
