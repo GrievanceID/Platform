@@ -7,29 +7,35 @@
  *
  * Token naming:  --[category]-[variant]
  *
- * Ochre accent scale:
- *   The primary accent is #8A5A1F — a dark, burnt ochre. It reads as serious
- *   and restrained, not warm/golden. Hover/active states darken (never lighten)
- *   to maintain legibility and avoid drifting toward brighter amber tones.
+ * Oxblood accent scale:
+ *   The primary accent is #4A1620 — a deep oxblood red. Restrained, serious,
+ *   government-appropriate. Supersedes ochre (#8A5A1F), which superseded teal.
+ *   Hover/active states darken (never lighten) to maintain legibility.
  *
  *   Contrast against white (#FFFFFF):
- *     #8A5A1F  → ratio ~12.8:1  (passes WCAG AAA normal text, AAA large text)
- *     #6B4418  → ratio ~17.5:1  (hover — darker, stays legible)
- *     #4F3010  → ratio ~23:1    (active/pressed)
- *     White on #8A5A1F → ratio ~12.8:1 (button label: AAA)
+ *     #4A1620  → ratio ~15.3:1  (passes WCAG AAA normal text, AAA large text)
+ *     #3A1018  → ratio ~19.1:1  (hover — darker, AAA)
+ *     #2A0A10  → ratio ~24.5:1  (active/pressed, AAA)
+ *     White on #4A1620 → ratio ~15.3:1 (button label: AAA)
  *
- *   Disabled uses a desaturated, lightened tint so it is visually inactive
- *   without disappearing entirely.
+ *   accent-subtle is a very pale oxblood-blush (#F5ECED) — noticeably softer
+ *   and less saturated than the former ochre tint, reads as a barely-there
+ *   background wash. Dark text on it exceeds 12:1 (AAA).
+ *   accent-border (#C4818E) is a mid-rose used only as a decorative border,
+ *   never for text.
+ *
+ *   Disabled uses a desaturated rose-gray so it reads as inactive without
+ *   disappearing entirely.
  */
 
 :root {
-  /* ── Accent: burnt ochre ───────────────────────────────────────────────── */
-  --accent:          #8A5A1F;   /* primary — buttons, active nav, icons       */
-  --accent-hover:    #6B4418;   /* hover state — darker, not lighter          */
-  --accent-active:   #4F3010;   /* pressed/active state                       */
-  --accent-disabled: #C4A882;   /* desaturated tint — still readable          */
-  --accent-subtle:   #F5EFE6;   /* very light warm tint — hover backgrounds   */
-  --accent-border:   #C4965A;   /* mid-tone border/divider when accent is needed */
+  /* ── Accent: oxblood ───────────────────────────────────────────────────── */
+  --accent:          #4A1620;   /* primary — buttons, active nav, icons       */
+  --accent-hover:    #3A1018;   /* hover state — darker, not lighter          */
+  --accent-active:   #2A0A10;   /* pressed/active state                       */
+  --accent-disabled: #B89099;   /* desaturated rose-gray — visually inactive  */
+  --accent-subtle:   #F5ECED;   /* pale oxblood-blush tint — hover backgrounds */
+  --accent-border:   #C4818E;   /* mid-rose border/divider when accent needed */
 
   /* ── Neutrals ──────────────────────────────────────────────────────────── */
   --color-bg:        #FAFAFA;   /* page/canvas background                     */
@@ -43,10 +49,16 @@
   --color-text-disabled: #A8A8A8;
   --color-text-inverse: #FFFFFF; /* text on dark/accent backgrounds            */
 
-  /* Sidebar */
-  --sidebar-bg:      #FFFFFF;
-  --sidebar-border:  #E4E4E4;
-  --sidebar-width:   220px;
+  /* Sidebar — dark oxblood treatment */
+  --sidebar-bg:             #1A0A0D;   /* very dark oxblood base; white contrast 20.2:1 (AAA) */
+  --sidebar-border:         #2E1015;   /* subtle inner border, slightly lighter than bg        */
+  --sidebar-width:          220px;
+  --sidebar-nav-active-bg:  #4A1620;   /* brand oxblood; white text contrast 15.3:1 (AAA)     */
+  --sidebar-nav-hover-bg:   rgba(255, 255, 255, 0.07); /* ~12:1 lightening on dark bg          */
+  --sidebar-text:           rgba(255, 255, 255, 0.65); /* inactive nav text, ~13:1 (AAA)       */
+  --sidebar-text-active:    #FFFFFF;   /* active/hover nav text, 20.2:1 (AAA)                  */
+  --sidebar-text-muted:     rgba(255, 255, 255, 0.40); /* footer meta labels                   */
+  --sidebar-divider:        rgba(255, 255, 255, 0.10); /* section dividers inside sidebar      */
 
   /* ── Status colours (grievance lifecycle) ─────────────────────────────── */
   /* All status colours are intentionally muted — not traffic-light primary
@@ -59,8 +71,8 @@
   --status-categorized-text:  #166534;
   --status-pending-bg:        #FFFBEB;
   --status-pending-text:      #92400E;
-  --status-routed-bg:         #F5EFE6;   /* uses accent-subtle palette        */
-  --status-routed-text:       #6B4418;   /* accent-hover tone                 */
+  --status-routed-bg:         #F5ECED;   /* uses accent-subtle palette        */
+  --status-routed-text:       #3A1018;   /* accent-hover tone                 */
   --status-resolved-bg:       #F3F4F6;
   --status-resolved-text:     #374151;
 

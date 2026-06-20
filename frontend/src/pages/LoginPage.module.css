@@ -1,4 +1,5 @@
 .page {
+  position: relative;
   width: 100%;
   min-width: 0;
   display: flex;
@@ -15,6 +16,50 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
+}
+
+/* ── Back-to-home link (top-left / top-right in RTL, outside the card column) ── */
+.back_home {
+  position: absolute;
+  top: var(--space-5);
+  inset-inline-start: var(--space-6);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.back_home:hover {
+  color: var(--accent);
+}
+
+.back_arrow {
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+/* Flip arrow direction in RTL — pointing right to go "back" */
+:global([dir="rtl"]) .back_arrow {
+  transform: scaleX(-1);
+}
+
+/* ── Logo link wrapper — removes default link styling ── */
+.logo_link {
+  display: inline-flex;
+  text-decoration: none;
+  border-radius: var(--radius-base);
+  transition: opacity var(--transition-fast);
+}
+.logo_link:hover {
+  opacity: 0.8;
+}
+.logo_link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 /* ── Logo / heading block ── */

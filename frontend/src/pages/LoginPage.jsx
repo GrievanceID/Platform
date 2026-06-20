@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from '../components/ui';
 import { useAuth } from '../context/AuthContext';
@@ -7,6 +7,27 @@ import { api_request } from '../api/client';
 import { ROLE_HOME } from '../layouts/ProtectedRoute';
 import { toggle_lang } from '../i18n';
 import styles from './LoginPage.module.css';
+
+function BackArrow() {
+  return (
+    <svg
+      className={styles.back_arrow}
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M9 2L4 7l5 5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 const ROLES = [
   { value: 'citizen',  key: 'tab_citizen' },
@@ -64,12 +85,19 @@ export function LoginPage() {
 
   return (
     <div className={styles.page}>
+      <Link to="/" className={styles.back_home}>
+        <BackArrow />
+        {t('login.back_home')}
+      </Link>
+
       <div className={styles.container}>
         <div className={styles.heading_block}>
-          <div className={styles.logo_row}>
-            <span className={styles.logo_mark}>GID</span>
-            <span className={styles.app_name}>GrievanceID</span>
-          </div>
+          <Link to="/" className={styles.logo_link}>
+            <div className={styles.logo_row}>
+              <span className={styles.logo_mark}>GID</span>
+              <span className={styles.app_name}>GrievanceID</span>
+            </div>
+          </Link>
           <p className={styles.app_subtitle}>{t('login.subtitle')}</p>
         </div>
 
