@@ -160,6 +160,94 @@
   margin: 0;
 }
 
+/* ── Editable contact-info card ── */
+
+/* Caption explaining the self-reported / placeholder status */
+.self_reported_note {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  margin: 0 0 var(--space-4);
+  line-height: var(--leading-normal);
+}
+
+/* Empty-state value — "Non renseigné" / "غير محدد" */
+.field_empty {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* "Modifier" button in the Card actions slot */
+.edit_btn {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--accent);
+  background: none;
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.edit_btn:hover {
+  background: var(--accent-subtle);
+  color: var(--accent-hover);
+}
+
+/* Edit form — stacked inputs with breathing room */
+.edit_fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.edit_actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.cancel_btn {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+.cancel_btn:hover {
+  color: var(--color-text);
+}
+
+.save_ok {
+  font-size: var(--text-xs);
+  color: #166534;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  margin: var(--space-3) 0 0;
+}
+
+.save_err {
+  font-size: var(--text-xs);
+  color: #B91C1C;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  margin: 0 0 var(--space-3);
+}
+
 /* ── Contact card ── */
 .contact_body {
   font-size: var(--text-sm);
