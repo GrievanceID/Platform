@@ -5,15 +5,22 @@ import { useAuth } from '../../context/AuthContext';
 import { api_request } from '../../api/client';
 import styles from './ProfilePage.module.css';
 
+function Avatar({ email }) {
+  const initial = email ? email[0].toUpperCase() : '?';
+  return (
+    <div className={styles.avatar} aria-hidden="true">
+      {initial}
+    </div>
+  );
+}
+
 export function ProfilePage() {
   const { user: auth_user, token } = useAuth();
   const { t, i18n } = useTranslation();
 
-  // Fetch fresh user record — login response omits created_at because the
-  // /auth/login SELECT does not include that column. GET /users/me fixes this.
+  // Fetch fresh user record — login SELECT omits created_at; GET /users/me fixes this.
   const [profile, set_profile] = useState(null);
   const [loading, set_loading] = useState(true);
-  const [error, set_error] = useState('');
 
   useEffect(() => {
     if (!token) return;
@@ -22,13 +29,8 @@ export function ProfilePage() {
       .then(({ data }) => {
         if (!cancelled) { set_profile(data.user); set_loading(false); }
       })
-      .catch((err) => {
-        if (!cancelled) {
-          // Graceful degradation: fall back to auth context data
-          set_profile(auth_user ?? null);
-          set_error(err.message ?? t('citizen.detail_error'));
-          set_loading(false);
-        }
+      .catch(() => {
+        if (!cancelled) { set_profile(auth_user ?? null); set_loading(false); }
       });
     return () => { cancelled = true; };
   }, [token]);
@@ -53,7 +55,17 @@ export function ProfilePage() {
 
       {!loading && (
         <div className={styles.sections}>
-          {/* ── Account identity (read-only) ── */}
+
+          {/* ── Profile header — avatar + identity summary ── */}
+          <div className={styles.profile_hero}>
+            <Avatar email={display?.email} />
+            <div className={styles.hero_text}>
+              <p className={styles.hero_email}>{display?.email ?? '—'}</p>
+              <span className={styles.role_pill}>{display?.role ?? '—'}</span>
+            </div>
+          </div>
+
+          {/* ── Account identity — single-column read-only fields ── */}
           <Card title={t('citizen.profile_section_identity')}>
             <dl className={styles.fields}>
               <div className={styles.field}>
@@ -63,7 +75,7 @@ export function ProfilePage() {
               <div className={styles.field}>
                 <dt>{t('citizen.profile_role_label')}</dt>
                 <dd>
-                  <span className={styles.role_pill}>{display?.role ?? '—'}</span>
+                  <span className={styles.role_pill_sm}>{display?.role ?? '—'}</span>
                 </dd>
               </div>
               <div className={styles.field}>
@@ -95,6 +107,7 @@ export function ProfilePage() {
               </a>
             </div>
           </Card>
+
         </div>
       )}
     </div>
