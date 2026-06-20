@@ -4,7 +4,7 @@ const { Router } = require('express');
 const multer = require('multer');
 const path = require('path');
 const pool = require('../db/pool');
-const { authenticate, require_role } = require('../middleware/auth');
+const { authenticate, gate_role } = require('../middleware/auth');
 
 const router = Router();
 
@@ -30,7 +30,8 @@ const upload = multer({
 });
 
 // All citizen grievance routes require an authenticated citizen session.
-router.use(authenticate, require_role('citizen'));
+// gate_role (not require_role) so a non-citizen role skips to the next mounted router.
+router.use(authenticate, gate_role('citizen'));
 
 // ---------------------------------------------------------------------------
 // POST /grievances

@@ -32,6 +32,7 @@ function authenticate(req, res, next) {
 
 /**
  * Returns middleware that allows only the listed roles through.
+ * Sends 403 on mismatch — use this on individual routes within a router.
  * Usage: router.get('/foo', authenticate, require_role('admin', 'reviewer'), handler)
  */
 function require_role(...roles) {
@@ -43,4 +44,24 @@ function require_role(...roles) {
   };
 }
 
-module.exports = { authenticate, require_role };
+/**
+ * Returns middleware for router.use() that skips to the next mounted app router
+ * (via next('router')) when the role does not match, instead of sending 403.
+ *
+ * This is required when multiple role-specific routers are all mounted at the
+ * same path (e.g. app.use('/grievances', citizen_router); app.use('/grievances',
+ * reviewer_router)). Without this, the citizen router's require_role would send
+ * a 403 to a reviewer before Express ever reaches the reviewer router.
+ *
+ * Usage: router.use(authenticate, gate_role('citizen'))
+ */
+function gate_role(...roles) {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return next('router'); // skip this entire router; try the next app.use
+    }
+    next();
+  };
+}
+
+module.exports = { authenticate, require_role, gate_role };

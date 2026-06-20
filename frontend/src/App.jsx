@@ -12,6 +12,7 @@ import { GrievanceDetailPage } from './pages/citizen/GrievanceDetailPage';
 import { ProfilePage } from './pages/citizen/ProfilePage';
 import { HelpPage } from './pages/citizen/HelpPage';
 import { ReviewerQueuePage } from './pages/reviewer/ReviewerQueuePage';
+import { ReviewerCasePage } from './pages/reviewer/ReviewerCasePage';
 import { EmployeeDashboardPage } from './pages/employee/EmployeeDashboardPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminEmployeesPage } from './pages/admin/AdminEmployeesPage';
@@ -50,7 +51,8 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="/reviewer/queue" element={<ReviewerQueuePage />} />
+            <Route path="/reviewer/queue"     element={<ReviewerQueuePage />} />
+            <Route path="/reviewer/queue/:id" element={<ReviewerCasePage />} />
           </Route>
 
           {/* Employee */}
