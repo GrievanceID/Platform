@@ -1,6 +1,6 @@
 # CLAUDE.md — Operating Rules for This Repo
 
-This is the `platform` repo for the SURP'26 voice-based citizen grievance platform (GrievanceID org).
+This is the `platform` repo for the SURP'26 voice-based citizen grievance platform (TawthiqID — formerly GrievanceID org).
 Full system spec lives at `/docs/PROJECT_SPECIFICATION.md` — read it before scaffolding or making
 architectural decisions. This file is operating rules, not the spec itself.
 
@@ -39,6 +39,14 @@ anywhere including in `PROJECT_SPECIFICATION.md`, treat this file as authoritati
 - Border radius: minimal, 2-4px max — avoid heavily rounded "consumer app" aesthetics
 - Token source of truth: `frontend/src/styles/tokens.css` — never hardcode color, spacing,
   or radius values directly in component files; add missing values to tokens.css first.
+- Logo assets (rebrand to TawthiqID, 2026-06-23): `frontend/src/assets/branding/`
+  - `tawthiqid-logo-transparent.png` — full icon+wordmark lockup, transparent bg. Use for
+    navbar, login page header, and footers (light/neutral backgrounds).
+  - `tawthiqid-logo-sidebar.png` — same lockup with "Tawthiq" text recolored white for
+    legibility on the oxblood sidebar. Use ONLY for sidebar headers (CitizenLayout, StaffLayout).
+  - `tawthiqid-icon-square.png` — icon-only, square-padded, transparent. Use for favicon
+    and any app-icon-style slot.
+  - `tawthiqid-logo-light.png` / `tawthiqid-icon.png` — secondary variants, available if needed.
 
 ## Workflow conventions
 

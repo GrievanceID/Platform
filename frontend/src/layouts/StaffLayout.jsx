@@ -45,7 +45,12 @@ export function StaffLayout() {
         onNavigate={(key) => navigate(key)}
         header={
           <div className={styles.brand}>
-            <span className={styles.brand_name}>GrievanceID</span>
+            <img
+              src="/src/assets/branding/tawthiqid-logo-sidebar.png"
+              alt="TawthiqID"
+              className={styles.brand_logo}
+              height={28}
+            />
           </div>
         }
         footer={

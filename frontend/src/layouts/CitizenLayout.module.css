@@ -25,11 +25,10 @@
   gap: var(--space-2);
 }
 
-.brand_name {
-  font-size: var(--text-base);
-  font-weight: var(--weight-semibold);
-  color: var(--sidebar-text-active);
-  letter-spacing: -0.01em;
+.brand_logo {
+  display: block;
+  height: 28px;
+  width: auto;
 }
 
 /* ── Sidebar footer slot ── */

@@ -129,8 +129,12 @@ export function FeaturesPage() {
           <div className={styles.footer_inner}>
             <div className={styles.footer_brand}>
               <div className={styles.footer_logo}>
-                <span className={styles.brand_mark_sm}>GID</span>
-                <span className={styles.footer_logo_name}>GrievanceID</span>
+                <img
+                  src="/src/assets/branding/tawthiqid-logo-transparent.png"
+                  alt="TawthiqID"
+                  className={styles.footer_logo_img}
+                  height={24}
+                />
               </div>
               <p className={styles.footer_tagline}>{t('landing.footer_tagline')}</p>
             </div>

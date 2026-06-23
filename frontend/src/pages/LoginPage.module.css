@@ -71,33 +71,10 @@
   gap: var(--space-2);
 }
 
-.logo_row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.logo_mark {
-  width: 32px;
-  height: 32px;
-  background: var(--accent);
-  color: var(--color-text-inverse);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  letter-spacing: 0.04em;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.app_name {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-semibold);
-  color: var(--color-text);
-  letter-spacing: -0.02em;
-  margin: 0;
+.brand_logo {
+  display: block;
+  height: 36px;
+  width: auto;
 }
 
 .app_subtitle {

@@ -44,8 +44,12 @@ export function LandingNav() {
     <header className={`${styles.nav} ${scrolled ? styles.nav_scrolled : ''}`}>
       <div className={styles.inner}>
         <a href="#home" className={styles.brand} onClick={(e) => handle_anchor(e, '#home')}>
-          <span className={styles.brand_mark}>GID</span>
-          <span className={styles.brand_name}>GrievanceID</span>
+          <img
+            src="/src/assets/branding/tawthiqid-logo-transparent.png"
+            alt="TawthiqID"
+            className={styles.brand_logo}
+            height={28}
+          />
         </a>
 
         <nav className={styles.links} aria-label={t('nav.home')}>

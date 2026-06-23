@@ -93,10 +93,12 @@ export function LoginPage() {
       <div className={styles.container}>
         <div className={styles.heading_block}>
           <Link to="/" className={styles.logo_link}>
-            <div className={styles.logo_row}>
-              <span className={styles.logo_mark}>GID</span>
-              <span className={styles.app_name}>GrievanceID</span>
-            </div>
+            <img
+              src="/src/assets/branding/tawthiqid-logo-transparent.png"
+              alt="TawthiqID"
+              className={styles.brand_logo}
+              height={36}
+            />
           </Link>
           <p className={styles.app_subtitle}>{t('login.subtitle')}</p>
         </div>
