@@ -1,9 +1,10 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, Card, InView } from '../../components/ui';
 import { useAuth } from '../../context/AuthContext';
 import { api_request } from '../../api/client';
+import { useAudioRecorder } from '../../hooks/useAudioRecorder';
 import styles from './NewGrievancePage.module.css';
 
 const ACCEPTED_AUDIO = ['audio/wav', 'audio/mpeg', 'audio/ogg', 'audio/webm', 'audio/mp4'];
@@ -30,8 +31,6 @@ function save_draft(user_id, description) {
 function clear_draft(user_id) {
   try { localStorage.removeItem(draft_key(user_id)); } catch {}
 }
-
-const REC = { IDLE: 'idle', RECORDING: 'recording', PAUSED: 'paused', DONE: 'done' };
 
 export function NewGrievancePage() {
   const { token, user } = useAuth();
@@ -65,13 +64,25 @@ export function NewGrievancePage() {
   }
 
   const [mode, set_mode] = useState('record');
-  const [rec_state, set_rec_state] = useState(REC.IDLE);
-  const [rec_seconds, set_rec_seconds] = useState(0);
-  const [rec_blob, set_rec_blob] = useState(null);
-  const [rec_error, set_rec_error] = useState('');
-  const media_recorder_ref = useRef(null);
-  const chunks_ref = useRef([]);
-  const timer_ref = useRef(null);
+  const {
+    start: start_recording,
+    stop: stop_recording,
+    discard: discard_recording,
+    is_recording,
+    elapsed: rec_seconds,
+    blob: rec_blob,
+    error: rec_error_code,
+  } = useAudioRecorder();
+
+  // Map hook error codes to translated strings for the citizen page.
+  const rec_error = rec_error_code === 'denied'
+    ? t('submit.rec_error_denied')
+    : rec_error_code === 'device'
+      ? t('submit.rec_error_device')
+      : '';
+
+  // Derive rec_state from hook values so JSX branches are unchanged.
+  const rec_state = is_recording ? 'recording' : rec_blob ? 'done' : 'idle';
 
   const [upload_file, set_upload_file] = useState(null);
   const [upload_error, set_upload_error] = useState('');
@@ -87,67 +98,6 @@ export function NewGrievancePage() {
     if (!user?.id || !draft_dismissed) return;
     save_draft(user.id, description);
   }, [description, user?.id, draft_dismissed]);
-
-  useEffect(() => {
-    return () => {
-      if (timer_ref.current) clearInterval(timer_ref.current);
-      if (media_recorder_ref.current?.state !== 'inactive') {
-        media_recorder_ref.current?.stop();
-      }
-    };
-  }, []);
-
-  const start_recording = useCallback(async () => {
-    set_rec_error('');
-    set_rec_blob(null);
-    chunks_ref.current = [];
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
-      media_recorder_ref.current = recorder;
-
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunks_ref.current.push(e.data);
-      };
-
-      recorder.onstop = () => {
-        const blob = new Blob(chunks_ref.current, { type: recorder.mimeType || 'audio/webm' });
-        set_rec_blob(blob);
-        set_rec_state(REC.DONE);
-        stream.getTracks().forEach((t) => t.stop());
-        if (timer_ref.current) clearInterval(timer_ref.current);
-      };
-
-      recorder.start(200);
-      set_rec_state(REC.RECORDING);
-      set_rec_seconds(0);
-
-      timer_ref.current = setInterval(() => {
-        set_rec_seconds((s) => s + 1);
-      }, 1000);
-    } catch (err) {
-      set_rec_error(
-        err.name === 'NotAllowedError'
-          ? t('submit.rec_error_denied')
-          : t('submit.rec_error_device')
-      );
-    }
-  }, [t]);
-
-  const stop_recording = useCallback(() => {
-    if (media_recorder_ref.current?.state !== 'inactive') {
-      media_recorder_ref.current.stop();
-    }
-    if (timer_ref.current) clearInterval(timer_ref.current);
-  }, []);
-
-  const discard_recording = useCallback(() => {
-    set_rec_blob(null);
-    set_rec_state(REC.IDLE);
-    set_rec_seconds(0);
-    set_rec_error('');
-  }, []);
 
   function handle_file_change(e) {
     const file = e.target.files?.[0];
@@ -251,7 +201,7 @@ export function NewGrievancePage() {
                   role="tab"
                   aria-selected={mode === 'upload'}
                   className={`${styles.mode_tab} ${mode === 'upload' ? styles.mode_tab_active : ''}`}
-                  onClick={() => { set_mode('upload'); set_rec_error(''); }}
+                  onClick={() => { set_mode('upload'); }}
                 >
                   {t('submit.mode_upload')}
                 </button>
@@ -263,7 +213,7 @@ export function NewGrievancePage() {
                     <div className={styles.inline_error} role="alert">{rec_error}</div>
                   )}
 
-                  {rec_state === REC.IDLE && (
+                  {rec_state === 'idle' && (
                     <div className={styles.record_idle}>
                       <MicIcon className={styles.mic_icon} />
                       <p className={styles.record_hint}>{t('submit.rec_hint')}</p>
@@ -273,7 +223,7 @@ export function NewGrievancePage() {
                     </div>
                   )}
 
-                  {rec_state === REC.RECORDING && (
+                  {rec_state === 'recording' && (
                     <div className={styles.record_active}>
                       <div className={styles.rec_indicator} aria-label={t('submit.rec_in_progress')}>
                         <span className={styles.rec_dot} aria-hidden="true" />
@@ -286,7 +236,7 @@ export function NewGrievancePage() {
                     </div>
                   )}
 
-                  {rec_state === REC.DONE && rec_blob && (
+                  {rec_state === 'done' && rec_blob && (
                     <div className={styles.record_done}>
                       <div className={styles.rec_summary}>
                         <CheckIcon className={styles.check_icon} />

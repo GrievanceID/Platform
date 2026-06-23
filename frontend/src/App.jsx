@@ -15,6 +15,9 @@ import { ReviewerQueuePage } from './pages/reviewer/ReviewerQueuePage';
 import { ReviewerCasePage } from './pages/reviewer/ReviewerCasePage';
 import { EmployeeDashboardPage } from './pages/employee/EmployeeDashboardPage';
 import { EmployeeCasePage } from './pages/employee/EmployeeCasePage';
+import { EmployeeSessionsPage } from './pages/employee/EmployeeSessionsPage';
+import { EmployeeRecordPage } from './pages/employee/EmployeeRecordPage';
+import { EmployeeSessionDetailPage } from './pages/employee/EmployeeSessionDetailPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminEmployeesPage } from './pages/admin/AdminEmployeesPage';
 import { AdminStatsPage } from './pages/admin/AdminStatsPage';
@@ -65,8 +68,11 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="/employee/dashboard" element={<EmployeeDashboardPage />} />
-            <Route path="/employee/cases/:id" element={<EmployeeCasePage />} />
+            <Route path="/employee/dashboard"   element={<EmployeeDashboardPage />} />
+            <Route path="/employee/cases/:id"   element={<EmployeeCasePage />} />
+            <Route path="/employee/sessions"        element={<EmployeeSessionsPage />} />
+            <Route path="/employee/sessions/new"    element={<EmployeeRecordPage />} />
+            <Route path="/employee/sessions/:id"    element={<EmployeeSessionDetailPage />} />
           </Route>
 
           {/* Admin */}
