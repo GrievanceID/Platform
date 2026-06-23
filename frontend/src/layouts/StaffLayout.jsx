@@ -17,6 +17,7 @@ export function StaffLayout() {
     ],
     employee: [
       { key: '/employee/dashboard', label: t('employee.nav_grievances'), icon: <ListIcon /> },
+      { key: '/employee/sessions',  label: t('employee.nav_sessions'),   icon: <MicIcon /> },
     ],
     admin: [
       { key: '/admin/dashboard',  label: t('admin.nav_grievances'), icon: <ListIcon /> },
@@ -119,6 +120,16 @@ function FlagIcon() {
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path d="M3 2v12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       <path d="M3 2.5h8.5l-2 3.5 2 3.5H3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function MicIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <rect x="5.5" y="1" width="5" height="8" rx="2.5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M2.5 8a5.5 5.5 0 0 0 11 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="8" y1="13.5" x2="8" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }

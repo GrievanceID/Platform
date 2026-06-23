@@ -34,3 +34,7 @@
   background-color: var(--status-resolved-bg);
   color: var(--status-resolved-text);
 }
+.recording {
+  background-color: #FEF2F2;
+  color: #B91C1C;
+}

@@ -10,6 +10,7 @@ const employee_grievances_router = require('./routes/grievances.employee');
 const { grievances_router: admin_grievances_router, employees_router } = require('./routes/grievances.admin');
 const users_router = require('./routes/users');
 const issue_reports_router = require('./routes/issue-reports');
+const live_sessions_router = require('./routes/live-sessions');
 
 const app = express();
 
@@ -37,6 +38,9 @@ app.use('/users', users_router);
 
 // Issue / flag reports — POST for Reviewer/Employee, GET/PATCH for Admin
 app.use('/issue-reports', issue_reports_router);
+
+// Live session recording — Employee only, institution-scoped
+app.use('/live-sessions', live_sessions_router);
 
 // Catch-all for undefined routes
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
