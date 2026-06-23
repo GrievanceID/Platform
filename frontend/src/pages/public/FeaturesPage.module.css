@@ -112,24 +112,10 @@
   gap: var(--space-2);
 }
 
-.brand_mark_sm {
-  width: 28px;
-  height: 28px;
-  background: var(--accent);
-  color: white;
-  font-size: 10px;
-  font-weight: var(--weight-semibold);
-  letter-spacing: 0.04em;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer_logo_name {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  color: var(--color-text-inverse);
+.footer_logo_img {
+  display: block;
+  height: 24px;
+  width: auto;
 }
 
 .footer_tagline {

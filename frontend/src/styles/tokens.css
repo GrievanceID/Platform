@@ -1,5 +1,5 @@
 /*
- * Design tokens — GrievanceID platform
+ * Design tokens — TawthiqID platform
  *
  * Every value here is a CSS custom property. Components import this file (via
  * main.jsx's global import) and reference var(--token-name) — never hardcoded
