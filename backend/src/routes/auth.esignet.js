@@ -12,7 +12,10 @@ const router = Router();
 // TEMPORARY: replace with DB lookup once sub→user mapping is established.
 // Starts empty — the first real eSignet login logs UNMAPPED_ESIGNET_SUB so we
 // can add the mapping by hand.
-const SUB_TO_USER = {};
+const SUB_TO_USER = {
+  // TEMPORARY: replace with DB lookup once sub→user mapping is established
+  'pz30NkzsK8yZfOmwrDZrt8NrNADlhHqIDvCoBeJ2cHk': 'fdf39a12-7bfe-4218-a310-129876d68688'
+};
 
 // ---------------------------------------------------------------------------
 // GET /auth/esignet/callback — eSignet OpenID4VP authorization code callback
