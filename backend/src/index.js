@@ -4,6 +4,7 @@ const express = require('express');
 const config = require('./config');
 const error_handler = require('./middleware/error-handler');
 const auth_router = require('./routes/auth');
+const esignet_auth_router = require('./routes/auth.esignet');
 const citizen_grievances_router = require('./routes/grievances.citizen');
 const reviewer_grievances_router = require('./routes/grievances.reviewer');
 const employee_grievances_router = require('./routes/grievances.employee');
@@ -20,6 +21,7 @@ app.use(express.json());
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 
 app.use('/auth', auth_router);
+app.use('/auth/esignet', esignet_auth_router);
 
 // Role-specific grievance routers — each enforces its own role via middleware.
 // All four are mounted at /grievances; require_role on each router ensures a

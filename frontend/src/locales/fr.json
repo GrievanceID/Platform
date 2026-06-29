@@ -217,7 +217,14 @@
     "choice_staff_label": "Personnel",
     "choice_staff_sub": "Accès à la plateforme de gestion interne",
     "back_to_choice": "Retour au choix du rôle",
-    "staff_role_label": "Rôle"
+    "staff_role_label": "Rôle",
+    "esignet_submit": "Se connecter avec votre identité numérique",
+    "esignet_sub": "Vous serez redirigé vers le système d'identité national",
+    "esignet_redirecting": "Redirection en cours…",
+    "esignet_error_unrecognized": "Identité non reconnue — contactez l'administrateur",
+    "esignet_error_generic": "Une erreur est survenue lors de la connexion. Veuillez réessayer.",
+    "esignet_retry": "Réessayer",
+    "esignet_state_mismatch": "La session a expiré ou est invalide. Veuillez réessayer."
   },
   "citizen": {
     "nav_grievances": "Mes réclamations",
