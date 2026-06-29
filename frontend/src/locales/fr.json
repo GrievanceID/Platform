@@ -211,7 +211,13 @@
     "submitting": "Connexion en cours…",
     "error_mismatch": "Ce compte est enregistré en tant que {{actual}}, pas {{selected}}. Sélectionnez l'onglet \"{{actual}}\" et réessayez.",
     "error_generic": "Échec de la connexion. Veuillez réessayer.",
-    "back_home": "Retour à l'accueil"
+    "back_home": "Retour à l'accueil",
+    "choice_citizen_label": "Citoyen",
+    "choice_citizen_sub": "Soumettre et suivre vos réclamations",
+    "choice_staff_label": "Personnel",
+    "choice_staff_sub": "Accès à la plateforme de gestion interne",
+    "back_to_choice": "Retour au choix du rôle",
+    "staff_role_label": "Rôle"
   },
   "citizen": {
     "nav_grievances": "Mes réclamations",

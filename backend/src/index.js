@@ -11,6 +11,7 @@ const { grievances_router: admin_grievances_router, employees_router } = require
 const users_router = require('./routes/users');
 const issue_reports_router = require('./routes/issue-reports');
 const live_sessions_router = require('./routes/live-sessions');
+const pool = require('./db/pool');
 
 const app = express();
 
@@ -47,8 +48,19 @@ app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
 
 app.use(error_handler);
 
-app.listen(config.port, () => {
-  console.log(`Backend listening on port ${config.port} (${config.node_env})`);
+// Verify DB connectivity before binding the port. This tightens the restart
+// window during `node --watch` cycles: the port is only available once the
+// process is genuinely ready to serve requests, reducing the chance of a
+// ECONNREFUSED on the first request after a restart.
+pool.connect((err, client, release) => {
+  if (err) {
+    console.error('Failed to connect to database on startup:', err.message);
+    process.exit(1);
+  }
+  release();
+  app.listen(config.port, () => {
+    console.log(`Backend listening on port ${config.port} (${config.node_env})`);
+  });
 });
 
 module.exports = app;
