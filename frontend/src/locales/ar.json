@@ -217,7 +217,14 @@
     "choice_staff_label": "موظف",
     "choice_staff_sub": "دخول منصة الإدارة الداخلية",
     "back_to_choice": "العودة إلى اختيار الدور",
-    "staff_role_label": "الدور الوظيفي"
+    "staff_role_label": "الدور الوظيفي",
+    "esignet_submit": "تسجيل الدخول بهويتك الرقمية",
+    "esignet_sub": "ستُحوَّل إلى نظام الهوية الوطنية",
+    "esignet_redirecting": "جارٍ التحويل…",
+    "esignet_error_unrecognized": "هوية غير معروفة — يرجى التواصل مع المسؤول",
+    "esignet_error_generic": "حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مجدداً.",
+    "esignet_retry": "إعادة المحاولة",
+    "esignet_state_mismatch": "انتهت صلاحية الجلسة أو أصبحت غير صالحة. يرجى المحاولة مجدداً."
   },
   "citizen": {
     "nav_grievances": "شكاواي",

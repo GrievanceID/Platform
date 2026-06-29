@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from '../components/ui';
@@ -7,6 +7,39 @@ import { api_request } from '../api/client';
 import { ROLE_HOME } from '../layouts/ProtectedRoute';
 import { toggle_lang } from '../i18n';
 import styles from './LoginPage.module.css';
+
+const ESIGNET_AUTHORIZE_URL = 'http://localhost:3000/authorize';
+const ESIGNET_CLIENT_ID = 'tawthiqid-citizen';
+const ESIGNET_REDIRECT_URI = 'http://localhost:5173/login';
+const ESIGNET_STATE_KEY = 'esignet_state';
+
+function random_string(length = 16) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let out = '';
+  for (let i = 0; i < length; i += 1) {
+    out += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return out;
+}
+
+function start_esignet_login() {
+  const nonce = random_string();
+  const state = random_string();
+  sessionStorage.setItem(ESIGNET_STATE_KEY, state);
+
+  const params = new URLSearchParams({
+    client_id: ESIGNET_CLIENT_ID,
+    redirect_uri: ESIGNET_REDIRECT_URI,
+    response_type: 'code',
+    scope: 'openid profile',
+    acr_values: 'mosip:idp:acr:generated-code',
+    claims_locales: 'en',
+    nonce,
+    state,
+  });
+
+  window.location.href = `${ESIGNET_AUTHORIZE_URL}?${params.toString()}`;
+}
 
 function BackArrow() {
   return (
@@ -48,6 +81,52 @@ export function LoginPage() {
   const [password, set_password] = useState('');
   const [error, set_error] = useState('');
   const [loading, set_loading] = useState(false);
+
+  const [esignet_status, set_esignet_status] = useState('idle'); // 'idle' | 'pending' | 'error'
+  const [esignet_error, set_esignet_error] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const code = params.get('code');
+    const state = params.get('state');
+
+    if (!code || !state) return;
+
+    const stored_state = sessionStorage.getItem(ESIGNET_STATE_KEY);
+
+    async function complete_esignet_login() {
+      set_tier('citizen');
+      set_esignet_status('pending');
+      set_esignet_error('');
+
+      if (state !== stored_state) {
+        sessionStorage.removeItem(ESIGNET_STATE_KEY);
+        set_esignet_status('error');
+        set_esignet_error(t('login.esignet_state_mismatch'));
+        return;
+      }
+
+      try {
+        const { data } = await api_request(
+          `/auth/esignet/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`
+        );
+        sessionStorage.removeItem(ESIGNET_STATE_KEY);
+        commit_session(data.token, data.user);
+        navigate('/grievances/mine', { replace: true });
+      } catch (err) {
+        sessionStorage.removeItem(ESIGNET_STATE_KEY);
+        set_esignet_status('error');
+        if (err.status === 401) {
+          set_esignet_error(t('login.esignet_error_unrecognized'));
+        } else {
+          set_esignet_error(t('login.esignet_error_generic'));
+        }
+      }
+    }
+
+    complete_esignet_login();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (is_authenticated && user) {
     navigate(ROLE_HOME[user.role] ?? '/', { replace: true });
@@ -174,53 +253,42 @@ export function LoginPage() {
                   {t('login.back_to_choice')}
                 </button>
               </div>
-              {/* TEMPORARY: will be replaced by eSignet redirect flow */}
-              <form onSubmit={handle_submit} noValidate>
-                <div className={styles.form_body}>
-                  <h2 className={styles.form_title}>
-                    {t('login.title', { role: t('login.tab_citizen') })}
-                  </h2>
+              <div className={styles.form_body}>
+                <h2 className={styles.form_title}>
+                  {t('login.title', { role: t('login.tab_citizen') })}
+                </h2>
 
-                  {error && (
-                    <div className={styles.error_banner} role="alert">{error}</div>
-                  )}
+                {esignet_status === 'error' && (
+                  <div className={styles.error_banner} role="alert">{esignet_error}</div>
+                )}
 
-                  <Input
-                    id="email"
-                    type="email"
-                    label={t('login.email_label')}
-                    autoComplete="email"
-                    value={email}
-                    onChange={(e) => set_email(e.target.value)}
-                    required
-                    disabled={loading}
-                  />
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="lg"
+                  disabled={esignet_status === 'pending'}
+                  onClick={start_esignet_login}
+                >
+                  {esignet_status === 'pending' ? t('login.esignet_redirecting') : t('login.esignet_submit')}
+                </Button>
 
-                  <Input
-                    id="password"
-                    type="password"
-                    label={t('login.password_label')}
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => set_password(e.target.value)}
-                    required
-                    disabled={loading}
-                  />
+                <p className={styles.app_subtitle}>{t('login.esignet_sub')}</p>
 
+                {esignet_status === 'error' && (
                   <Button
-                    type="submit"
-                    variant="primary"
+                    type="button"
+                    variant="secondary"
                     size="lg"
-                    disabled={loading || !email || !password}
+                    onClick={start_esignet_login}
                   >
-                    {loading ? t('login.submitting') : t('login.submit')}
+                    {t('login.esignet_retry')}
                   </Button>
+                )}
 
-                  <button type="button" className={styles.lang_toggle} onClick={toggle_lang}>
-                    {t('lang_toggle.label')}
-                  </button>
-                </div>
-              </form>
+                <button type="button" className={styles.lang_toggle} onClick={toggle_lang}>
+                  {t('lang_toggle.label')}
+                </button>
+              </div>
             </>
           )}
 
