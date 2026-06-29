@@ -211,7 +211,13 @@
     "submitting": "جارٍ تسجيل الدخول…",
     "error_mismatch": "هذا الحساب مسجل بصفة {{actual}}، لا {{selected}}. اختر علامة \"{{actual}}\" وحاول مجدداً.",
     "error_generic": "فشل تسجيل الدخول. يرجى المحاولة مجدداً.",
-    "back_home": "العودة إلى الرئيسية"
+    "back_home": "العودة إلى الرئيسية",
+    "choice_citizen_label": "مواطن",
+    "choice_citizen_sub": "تقديم ومتابعة شكاواك",
+    "choice_staff_label": "موظف",
+    "choice_staff_sub": "دخول منصة الإدارة الداخلية",
+    "back_to_choice": "العودة إلى اختيار الدور",
+    "staff_role_label": "الدور الوظيفي"
   },
   "citizen": {
     "nav_grievances": "شكاواي",

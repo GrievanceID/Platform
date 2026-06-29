@@ -29,8 +29,7 @@ function BackArrow() {
   );
 }
 
-const ROLES = [
-  { value: 'citizen',  key: 'tab_citizen' },
+const STAFF_ROLES = [
   { value: 'reviewer', key: 'tab_reviewer' },
   { value: 'employee', key: 'tab_employee' },
   { value: 'admin',    key: 'tab_admin' },
@@ -42,7 +41,9 @@ export function LoginPage() {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const [selected_role, set_selected_role] = useState('citizen');
+  // tier: 'choice' | 'citizen' | 'staff'
+  const [tier, set_tier] = useState('choice');
+  const [selected_role, set_selected_role] = useState('reviewer');
   const [email, set_email] = useState('');
   const [password, set_password] = useState('');
   const [error, set_error] = useState('');
@@ -52,6 +53,31 @@ export function LoginPage() {
     navigate(ROLE_HOME[user.role] ?? '/', { replace: true });
     return null;
   }
+
+  function go_to_citizen() {
+    set_email('');
+    set_password('');
+    set_error('');
+    set_tier('citizen');
+  }
+
+  function go_to_staff() {
+    set_email('');
+    set_password('');
+    set_error('');
+    set_tier('staff');
+  }
+
+  function go_back_to_choice() {
+    set_email('');
+    set_password('');
+    set_error('');
+    set_tier('choice');
+  }
+
+  // For the citizen path, the declared role is always 'citizen'.
+  // For the staff path, it is the value of the role selector.
+  const declared_role = tier === 'citizen' ? 'citizen' : selected_role;
 
   async function handle_submit(e) {
     e.preventDefault();
@@ -66,9 +92,10 @@ export function LoginPage() {
 
       const returned_user = data.user;
 
-      if (returned_user.role !== selected_role) {
+      // Role-gate: declared role (tab/selector) must match what the backend returns.
+      if (returned_user.role !== declared_role) {
         const actual_label = t(`login.tab_${returned_user.role}`, { defaultValue: returned_user.role });
-        const selected_label = t(`login.tab_${selected_role}`, { defaultValue: selected_role });
+        const selected_label = t(`login.tab_${declared_role}`, { defaultValue: declared_role });
         set_error(t('login.error_mismatch', { actual: actual_label, selected: selected_label }));
         return;
       }
@@ -104,68 +131,180 @@ export function LoginPage() {
         </div>
 
         <div className={styles.card}>
-          <div className={styles.role_tabs} role="tablist" aria-label={t('login.subtitle')}>
-            {ROLES.map((role) => (
-              <button
-                key={role.value}
-                type="button"
-                role="tab"
-                aria-selected={selected_role === role.value}
-                className={`${styles.role_tab} ${selected_role === role.value ? styles.role_tab_active : ''}`}
-                onClick={() => { set_selected_role(role.value); set_error(''); }}
-                disabled={loading}
-              >
-                {t(`login.${role.key}`)}
-              </button>
-            ))}
-          </div>
+          {/* ── Tier 1: Entry choice ── */}
+          {tier === 'choice' && (
+            <>
+              <div className={styles.choice_grid}>
+                <button
+                  type="button"
+                  className={styles.choice_card}
+                  onClick={go_to_citizen}
+                >
+                  <span className={styles.choice_label}>{t('login.choice_citizen_label')}</span>
+                  <span className={styles.choice_sub}>{t('login.choice_citizen_sub')}</span>
+                </button>
+                <button
+                  type="button"
+                  className={styles.choice_card}
+                  onClick={go_to_staff}
+                >
+                  <span className={styles.choice_label}>{t('login.choice_staff_label')}</span>
+                  <span className={styles.choice_sub}>{t('login.choice_staff_sub')}</span>
+                </button>
+              </div>
+              <div className={styles.choice_footer}>
+                <button type="button" className={styles.lang_toggle} onClick={toggle_lang}>
+                  {t('lang_toggle.label')}
+                </button>
+              </div>
+            </>
+          )}
 
-          <form onSubmit={handle_submit} noValidate>
-            <div className={styles.form_body}>
-              <h2 className={styles.form_title}>
-                {t('login.title', { role: t(`login.tab_${selected_role}`) })}
-              </h2>
+          {/* ── Tier 2a: Citizen path ── */}
+          {tier === 'citizen' && (
+            <>
+              <div className={styles.tier_header}>
+                <button
+                  type="button"
+                  className={styles.back_to_choice}
+                  onClick={go_back_to_choice}
+                  disabled={loading}
+                >
+                  <BackArrow />
+                  {t('login.back_to_choice')}
+                </button>
+              </div>
+              {/* TEMPORARY: will be replaced by eSignet redirect flow */}
+              <form onSubmit={handle_submit} noValidate>
+                <div className={styles.form_body}>
+                  <h2 className={styles.form_title}>
+                    {t('login.title', { role: t('login.tab_citizen') })}
+                  </h2>
 
-              {error && (
-                <div className={styles.error_banner} role="alert">{error}</div>
-              )}
+                  {error && (
+                    <div className={styles.error_banner} role="alert">{error}</div>
+                  )}
 
-              <Input
-                id="email"
-                type="email"
-                label={t('login.email_label')}
-                autoComplete="email"
-                value={email}
-                onChange={(e) => set_email(e.target.value)}
-                required
-                disabled={loading}
-              />
+                  <Input
+                    id="email"
+                    type="email"
+                    label={t('login.email_label')}
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => set_email(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
 
-              <Input
-                id="password"
-                type="password"
-                label={t('login.password_label')}
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => set_password(e.target.value)}
-                required
-                disabled={loading}
-              />
+                  <Input
+                    id="password"
+                    type="password"
+                    label={t('login.password_label')}
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => set_password(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
 
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                disabled={loading || !email || !password}
-              >
-                {loading ? t('login.submitting') : t('login.submit')}
-              </Button>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    disabled={loading || !email || !password}
+                  >
+                    {loading ? t('login.submitting') : t('login.submit')}
+                  </Button>
 
-              <button type="button" className={styles.lang_toggle} onClick={toggle_lang}>
-                {t('lang_toggle.label')}
-              </button>
-            </div>
-          </form>
+                  <button type="button" className={styles.lang_toggle} onClick={toggle_lang}>
+                    {t('lang_toggle.label')}
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
+
+          {/* ── Tier 2b: Staff path ── */}
+          {tier === 'staff' && (
+            <>
+              <div className={styles.tier_header}>
+                <button
+                  type="button"
+                  className={styles.back_to_choice}
+                  onClick={go_back_to_choice}
+                  disabled={loading}
+                >
+                  <BackArrow />
+                  {t('login.back_to_choice')}
+                </button>
+              </div>
+              <form onSubmit={handle_submit} noValidate>
+                <div className={styles.form_body}>
+                  <h2 className={styles.form_title}>
+                    {t('login.title', { role: t(`login.tab_${selected_role}`) })}
+                  </h2>
+
+                  {error && (
+                    <div className={styles.error_banner} role="alert">{error}</div>
+                  )}
+
+                  <div className={styles.role_select_group}>
+                    <label className={styles.role_select_label} htmlFor="staff_role">
+                      {t('login.staff_role_label')}
+                    </label>
+                    <select
+                      id="staff_role"
+                      className={styles.role_select}
+                      value={selected_role}
+                      onChange={(e) => { set_selected_role(e.target.value); set_error(''); }}
+                      disabled={loading}
+                    >
+                      {STAFF_ROLES.map((r) => (
+                        <option key={r.value} value={r.value}>
+                          {t(`login.${r.key}`)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <Input
+                    id="email"
+                    type="email"
+                    label={t('login.email_label')}
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => set_email(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
+
+                  <Input
+                    id="password"
+                    type="password"
+                    label={t('login.password_label')}
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => set_password(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
+
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    disabled={loading || !email || !password}
+                  >
+                    {loading ? t('login.submitting') : t('login.submit')}
+                  </Button>
+
+                  <button type="button" className={styles.lang_toggle} onClick={toggle_lang}>
+                    {t('lang_toggle.label')}
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
         </div>
       </div>
     </div>
